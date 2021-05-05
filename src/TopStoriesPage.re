@@ -28,9 +28,13 @@ let make = () => {
     );
   // Using useEffect0 to run this effect one time and prevent multiple reloads of same data which crashes browser
   React.useEffect0(() => {
+
     StoryData.fetchTopStories(state.page, payload =>
       dispatch(Loaded(payload))
     )
+    StoryData.fetchConfessions(payload =>
+    Js.log(payload))
+
     |> ignore;
     None;
   });

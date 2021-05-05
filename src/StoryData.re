@@ -112,6 +112,7 @@ let fetchTopStories = (page, callback) =>
   Js.Promise.(
     Fetch.fetch(topStoriesUrl(page))
     |> then_(Fetch.Response.json)
+    
     |> then_(json =>
          json
          |> Decode.stories
@@ -130,7 +131,9 @@ let fetchStoryWithComments = (id, callback) =>
     Fetch.fetch(storyUrl(id))
     |> then_(Fetch.Response.json)
     |> then_(json =>
+
          json
+
          |> Decode.storyWithComments
          |> (
            stories => {
@@ -141,3 +144,55 @@ let fetchStoryWithComments = (id, callback) =>
        )
     |> ignore
   ); /* TODO: error handling */
+
+
+  let faunaUrl = "https://graphql.fauna.com/graphql"
+  let query = "query {
+    allConfessions{
+      data{
+        _id
+        message
+        comments(_size:2) {
+          data{
+            message
+            _ts
+          }
+        }
+      }
+    }
+  }"
+
+  let payload = Js.Dict.empty();
+
+  Js.Dict.set(payload, "query",Js.Json.string(query));
+  Js.log(payload);
+  //Js.log(Js.Json.object_(payload));
+
+
+let fetchConfessions = (callback) =>
+  Js.Promise.(
+    Fetch.fetchWithInit(faunaUrl,
+    Fetch.RequestInit.make(
+           ~method_= Post,
+           ~body=Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
+           ~headers = Fetch.HeadersInit.make({"Authorization" : "Bearer fnAEIZfYiPACBESKBQfn85i6_kS91Z7d6kMlb5Rj"}),
+           ()
+
+
+
+
+
+    ))
+    |> then_(Fetch.Response.json)
+    |> then_(json => {
+      Js.log("this is above")
+      Js.log(json)
+      callback(json);
+   
+    resolve();}
+    )
+  ); 
+
+
+ // callback("hello world fetch confessions");
+
