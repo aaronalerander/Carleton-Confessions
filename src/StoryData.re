@@ -146,15 +146,20 @@ let fetchStoryWithComments = (id, callback) =>
   ); /* TODO: error handling */
 
 
+
+
+
   let faunaUrl = "https://graphql.fauna.com/graphql"
   let query = "query {
     allConfessions{
       data{
         _id
+        _ts
         message
         comments(_size:2) {
           data{
             message
+            _id
             _ts
           }
         }
@@ -166,7 +171,88 @@ let fetchStoryWithComments = (id, callback) =>
 
   Js.Dict.set(payload, "query",Js.Json.string(query));
   Js.log(payload);
-  //Js.log(Js.Json.object_(payload));
+
+
+
+
+
+
+
+type confessionComment = {
+  message:string,
+  id:string,
+  ts:int
+  
+}
+
+type comments = {
+   commentsArray : array(confessionComment)
+
+}
+
+
+type confession = {
+  message: string,
+  id: string,
+  ts:int,
+  comments
+
+}
+
+
+type allConfessions = {
+  allConfessionsArray : array(confession)
+}
+
+type data = {
+  allConfessions
+}
+
+type response = {
+  data
+}
+
+
+
+let decodeConfessionComment = json =>
+  Json.Decode.{
+    message:json |> field("message",string),
+    id: json |> field("_id", string),
+    ts: json |> field("_ts", int)
+
+  }
+
+let decodeComments = json =>
+  Json.Decode.{
+    commentsArray: json |> field("data", array(decodeConfessionComment))
+  }
+
+let decodeConfessions = json =>
+  Json.Decode.{
+    message: json |> field("message", string),
+    id: json |> field("_id", string),
+    ts: json |> field("_ts", int),
+    comments: json |> field("comments",decodeComments)
+
+
+  };
+
+let decodeAllConfessions = json =>
+  Json.Decode.{
+    allConfessionsArray: json |> field("data", array(decodeConfessions))
+  }
+
+let decodeData = json =>
+  Json.Decode.{
+    allConfessions: json |> field("allConfessions", decodeAllConfessions)
+  }
+
+  let decodeResponse = json =>
+  Json.Decode.{
+    data: json |> field("data", decodeData)
+  }
+
+
 
 
 let fetchConfessions = (callback) =>
@@ -177,20 +263,30 @@ let fetchConfessions = (callback) =>
            ~body=Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(payload))),
            ~headers = Fetch.HeadersInit.make({"Authorization" : "Bearer fnAEIZfYiPACBESKBQfn85i6_kS91Z7d6kMlb5Rj"}),
            ()
-
-
-
-
-
     ))
     |> then_(Fetch.Response.json)
-    |> then_(json => {
-      Js.log("this is above")
-      Js.log(json)
-      callback(json);
-   
-    resolve();}
-    )
+    
+    // |> then_(json => {
+    //   Js.log("this is above")
+    //   Js.log(Some(json))
+    //   callback(json);
+    //   resolve();}
+
+
+
+    |> then_(json =>
+      json |> decodeResponse
+         |> (decodedResponse => callback(decodedResponse.data.allConfessions.allConfessionsArray)
+         |> resolve
+      )
+
+
+ 
+
+
+
+    ) 
+    |> ignore
   ); 
 
 
