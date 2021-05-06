@@ -213,6 +213,8 @@ type response = {
 }
 
 
+type recentConfessions = array(confession);
+
 
 let decodeConfessionComment = json =>
   Json.Decode.{
