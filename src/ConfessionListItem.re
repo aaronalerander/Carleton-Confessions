@@ -5,7 +5,7 @@ requireCSS("src/StoryListItem.css");
 let commentIcon = requireAssetURI("src/comment.png");
 
 [@react.component]
-let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
+let make = (~confession: ConfessionData.confession, ~index: int, ~showCommentInput = true, ()) => {
   let renderIndex = () =>
     <aside className="StoryListItem_storyIndex">
         {React.string(string_of_int(index + 1))}
@@ -13,9 +13,9 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
   let renderTitle = () => {
     let content = React.string(confession.message);
         <header className="StoryListItem_storyTitle">
-            <a href={"/comments/" ++ confession.id} className="StoryListItem_link" target="_blank">
+            <Link href={"/comments/" ++ confession.id} className="StoryListItem_link" >
             content
-            </a>
+            </Link>
         </header>;
   };
   let renderArticleButton = () =>
@@ -41,7 +41,14 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
       </Link>
     </div>;
 
+
+  <>  
+    {showCommentInput
+      ? ReasonReact.string("this will be the send comment button")
+      : ReasonReact.string("Change this to blank later")
+    }
     <div className="StoryListItem_itemRow">
+
     {renderArticleButton()}
     {renderCommentsButton()}
     // <b>{React.string(confession.message)}</b>
@@ -55,5 +62,6 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
             ->React.array
         }
         ;}
-    </div>;
+    </div>
+    </>
 };
