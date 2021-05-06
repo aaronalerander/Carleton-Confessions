@@ -9,7 +9,8 @@ type action =
 
 [@react.component]
 let make = (~id) => {
-    let (state, dispatch) = React.useReducer((_state, action) =>
+
+  let (state, dispatch) = React.useReducer((_state, action) =>
     switch (action) {
       | Loaded(data) =>{story_with_comments: Some(data)}
       },  {story_with_comments: None});
@@ -27,6 +28,7 @@ let make = (~id) => {
        }}
     </div>;
   };
+
   let renderByline = (story: StoryData.story_with_comments) =>
     <div>
       <span> {React.string(string_of_int(story.score))} </span>
@@ -39,6 +41,9 @@ let make = (~id) => {
         </span>
       </span>
     </div>;
+
+
+
     React.useEffect0(() => {
       StoryData.fetchStoryWithComments(id, data => dispatch(Loaded(data)))
       |> ignore;

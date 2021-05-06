@@ -24,6 +24,27 @@ open Belt;
   Js.Dict.set(allConfessionsQueryPayload, "query",Js.Json.string(allConfessionsQuery));
   Js.log(allConfessionsQueryPayload);
 
+let createConfessionWithCommentsQuery = (id) =>{
+  Js.log("inside confessionWithCommentsQuery");
+  Js.log(id);
+
+
+  "query{
+    findConfessionByID(id: \"" ++ id ++ "\"){
+      _id
+      _ts
+      message
+      comments{
+        data{
+          message
+          _id
+          _ts
+        }
+      }
+    }
+  }";
+}
+
 
 let createConfessionMutation = (confession) =>{
 Js.log("inside createConfessionMutation");
@@ -74,6 +95,16 @@ type response = {
   data
 }
 
+type confessionWithCommentsdata = {
+  confession
+}
+
+type confessionWithCommentsresponse = {
+  confessionWithCommentsdata
+}
+
+
+
 type recentConfessions = array(confession);
 
 let decodeConfessionComment = json =>
@@ -88,6 +119,7 @@ let decodeComments = json =>
     commentsArray: json |> field("data", array(decodeConfessionComment))
 }
 
+//this should say decodeConfession for prober varible names
 let decodeConfessions = json =>
   Json.Decode.{
     message: json |> field("message", string),
@@ -106,9 +138,23 @@ let decodeData = json =>
     allConfessions: json |> field("allConfessions", decodeAllConfessions)
 }
 
+
+
 let decodeResponse = json =>
     Json.Decode.{
     data: json |> field("data", decodeData)
+}
+
+let decodeConfessionWithCommentsdata = json =>
+  Json.Decode.{
+    confession: json |> field("findConfessionByID", decodeConfessions)
+}
+
+
+
+let decodeConfessionWithCommentsResponse = json =>
+    Json.Decode.{
+    confessionWithCommentsdata: json |> field("data", decodeConfessionWithCommentsdata)
 }
 
 let fetchConfessions = (callback) =>
@@ -137,6 +183,41 @@ let fetchConfessions = (callback) =>
   ); 
 
 
+
+  let fetchConfessionWithComments = (id, callback) =>{
+    Js.log(id)
+    Js.log(createConfessionWithCommentsQuery(id))
+      //Js.log("inside here with confession " ++ confession)
+    let createConfessionWithCommentsQueryPayload = Js.Dict.empty();
+    Js.Dict.set(createConfessionWithCommentsQueryPayload, "query",Js.Json.string(createConfessionWithCommentsQuery(id)))
+
+
+
+
+  Js.Promise.(
+    Fetch.fetchWithInit(faunaUrl,
+    Fetch.RequestInit.make(
+           ~method_= Post,
+           ~body=Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(createConfessionWithCommentsQueryPayload))),
+           ~headers = Fetch.HeadersInit.make({"Authorization" : "Bearer fnAEIZfYiPACBESKBQfn85i6_kS91Z7d6kMlb5Rj"}),
+           ()
+    ))
+    |> then_(Fetch.Response.json)
+    |> then_(json =>
+      json |> decodeConfessionWithCommentsResponse
+         |> (decodeConfessionWithCommentsResponse => callback(decodeConfessionWithCommentsResponse.confessionWithCommentsdata.confession)
+         |> resolve
+      )
+    // |> then_(json => {
+    //   Js.log("this is above")
+    //   Js.log(Some(json))
+    //   callback(json);  
+    // // callback("hello world fetch confessions");
+    //   resolve();}
+    ) 
+    |> ignore
+  ); 
+    }
 
 
 

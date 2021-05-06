@@ -44,7 +44,8 @@ let make = () => {
                  //key={string_of_int(int_of_string(confession.id) + index)}
                  key={confession.id}
                  index
-                 confession/>
+                 confession
+                 showCommentInput = false/>
                  )
              )
            ->React.array;
