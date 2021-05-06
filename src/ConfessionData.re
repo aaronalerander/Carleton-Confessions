@@ -62,6 +62,25 @@ Js.log(confession);
 
 
 
+let createCommentMutation = (id, comment) =>{
+  Js.log("inside createConfessionMutation");
+  Js.log(comment);
+  "mutation{
+    createComment(data: {
+      message:\"" ++ comment ++ "\" 
+      parentConfession: {
+        connect: \"" ++ id ++ "\"
+      }
+    }){
+      _id
+      _ts
+      message
+    }
+  }";
+  }
+
+
+
 //Js.Dict.set(createConfessionMutationPayload, "query",Js.Json.string(createConfessionMutation(confession)));
 //Js.log(createConfessionMutationPayload);
 
@@ -242,4 +261,28 @@ let fetchConfessions = (callback) =>
 
     ) 
   }
+
+
+
+  let createComment = (id, comment) =>{
+    Js.log(comment)
+    Js.log(createCommentMutation(id, comment))
+      //Js.log("inside here with confession " ++ confession)
+    let createCommentMutationPayload = Js.Dict.empty();
+    Js.Dict.set(createCommentMutationPayload, "query",Js.Json.string(createCommentMutation(id, comment)))
+    Js.Promise.(
+      Fetch.fetchWithInit(faunaUrl,
+        Fetch.RequestInit.make(
+              ~method_= Post,
+              ~body=Fetch.BodyInit.make(Js.Json.stringify(Js.Json.object_(createCommentMutationPayload))),
+              ~headers = Fetch.HeadersInit.make({"Authorization" : "Bearer fnAEIZfYiPACBESKBQfn85i6_kS91Z7d6kMlb5Rj"}),
+              ()
+        )
+      )
+  
+      |> then_(Fetch.Response.json)
+      |> then_(text => Js.log(text) |> resolve)
+  
+      ) 
+    }
   //)

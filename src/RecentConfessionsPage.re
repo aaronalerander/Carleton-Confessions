@@ -38,8 +38,12 @@ let make = () => {
   <div>
   {state.loading
     ? ReasonReact.string("Loading...")
-    : state.recentConfessions->(
+
+    : 
+    {state.recentConfessions->
+              
                Array.mapWithIndex((index, confession)=>
+               
                  <ConfessionListItem 
                  //key={string_of_int(int_of_string(confession.id) + index)}
                  key={confession.id}
@@ -47,8 +51,8 @@ let make = () => {
                  confession
                  showCommentInput = false/>
                  )
-             )
-           ->React.array;
+           ->React.array;          
+          }
   }
   </div>;
 };

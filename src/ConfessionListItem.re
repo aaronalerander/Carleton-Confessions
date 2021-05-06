@@ -6,18 +6,21 @@ let commentIcon = requireAssetURI("src/comment.png");
 
 [@react.component]
 let make = (~confession: ConfessionData.confession, ~index: int, ~showCommentInput = true, ()) => {
+  
   let renderIndex = () =>
     <aside className="StoryListItem_storyIndex">
         {React.string(string_of_int(index + 1))}
     </aside>;
-  let renderTitle = () => {
+  
+    let renderTitle = () => {
     let content = React.string(confession.message);
-        <header className="StoryListItem_storyTitle">
-            <Link href={"/comments/" ++ confession.id} className="StoryListItem_link" >
-            content
-            </Link>
-        </header>;
+    <header className="StoryListItem_storyTitle">
+        <Link href={"/comments/" ++ confession.id} className="StoryListItem_link" >
+        content
+        </Link>
+    </header>;
   };
+  
   let renderArticleButton = () =>
     <div className="StoryListItem_flexRow">
       {renderIndex()}
@@ -25,7 +28,8 @@ let make = (~confession: ConfessionData.confession, ~index: int, ~showCommentInp
         {renderTitle()}
       </div>
     </div>;
-  let renderCommentsButton = () =>
+  
+    let renderCommentsButton = () =>
     <div className="StoryListItem_commentsCell">
       <Link
         href={"/comments/" ++ confession.id}
