@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;900&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Reason React Hacker News</title>
@@ -14,7 +16,8 @@
     min-height: 100%;
   }
   body {
-    font-family: 'Helvetica Neue', 'Open Sans', sans-serif;
+    /* font-family: 'Helvetica Neue', 'Open Sans', sans-serif; */
+    font-family: 'Roboto', sans-serif;
     background-color: #ffffff;
   }
 
@@ -48,8 +51,19 @@
     text-decoration: none;
   }
 
+  .App_header a {
+    display: block;
+    flex: 0 0 auto;
+    color: rgb(0, 0, 0) !important;
+    text-decoration: none;
+  }
+
   .App_header h1 {
+    font-size: 37px;
+  }
+  .App_header h2 {
     font-size: 24px;
+    color: #fff;
   }
 
   a {
@@ -69,12 +83,13 @@
 <body>
 <div class="App">
   <div class="App_header">
+    <img src="./logo.png" style="padding-right: 10px;">
     <a href="/"> <h1>Carleton Confessions</h1> </a>
-  
-    
   </div>
-  <div class="App_header">
-  <a href="/submit"> Create A Confession</a>
+
+  <div class="App_header" >
+  <a href="/submit" style="padding-right: 10px; color: #fff;"><h2>Leave a confession now</h2></a>
+
 </div>
   
   <div id="root"></div>

@@ -39,7 +39,7 @@
 }
 .StoryListItem_storyIndex::after {
   display: block;
-  content: '.';
+  content: ".";
 }
 
 .StoryListItem_row {
@@ -49,7 +49,7 @@
 
 .StoryListItem_itemRow {
   align-items: stretch;
-  border-bottom: solid 1px #eee;
+  border-top: solid 1px #eee;
   display: flex;
   margin-top: 6px;
   margin-bottom: 6px;
@@ -58,7 +58,7 @@
 
 .StoryListItem_commentRow {
   align-items: stretch;
-  border-bottom: solid 1px #eee;
+  /* border-bottom: solid 1px #eee; */
   display: flex;
   margin-top: 6px;
   margin-left: 30px;
@@ -94,12 +94,31 @@
 }
 
 .StoryListItem_commentsText {
-  font-size: 10px;
+  font-size: 15px;
   text-align: center;
+  font-weight: bold;
+  color: #000;
 }
 .StoryListItem_commentsCell a {
   text-decoration: none;
 }
 a:hover .StoryListItem_commentsText {
   color: #000;
+}
+
+.StoryListItem_textArea {
+  height: 200px;
+  width: 800px;
+}
+
+.StoryListItem_button {
+  background-color: #c53030; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 25px;
 }

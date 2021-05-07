@@ -36,7 +36,7 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
         </div>
         <div>
           <span className="StoryListItem_commentsText">
-            {React.string(" comments")}
+            {React.string(" View All Comments")}
           </span>
         </div>
       </Link>
@@ -47,7 +47,6 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
       {renderArticleButton()}
       {renderCommentsButton()}
     </div>
-    <br />
     <b className="StoryListItem_commentRow"> {React.string("Comments")} </b>
     <div>
       {confession.comments.commentsArray
@@ -56,7 +55,7 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
            //<div className="StoryListItem_itemRow">
            =>
              <span className="StoryListItem_commentRow" key={item.id}>
-               {React.string(item.message)}
+               {React.string("-" ++ item.message)}
              </span>
            )
        //</div>
