@@ -5,8 +5,7 @@ type state = {
   confession: option(ConfessionData.confession),
   //confession: ConfessionData.confession,
   input: string,
-  submitted: bool
-  
+  submitted: bool,
 };
 
 type action =
@@ -18,128 +17,110 @@ type action =
 
 [@react.component]
 let make = (~id) => {
-
   let (state, dispatch) =
     React.useReducer(
       (state, action) =>
         switch (action) {
-        | Loaded(data) => {...state, input:"", confession: Some(data)};
+        | Loaded(data) => {...state, input: "", confession: Some(data)}
         | UpdateInput(newInput) => {...state, input: newInput}
         | Submit => {...state, submitted: true}
-        }, {confession : None, input:"", submitted:false});
+        },
+      {confession: None, input: "", submitted: false},
+    );
 
   React.useEffect0(() => {
-    ConfessionData.fetchConfessionWithComments(id,data =>
-    //Js.log(data)
-    dispatch(Loaded(data))
-    )
+    ConfessionData.fetchConfessionWithComments(id, data
+      //Js.log(data)
+      => dispatch(Loaded(data)))
     |> ignore;
     None;
   });
 
   <div>
-//   {state.loading
-//     ? ReasonReact.string("Loading...")
-//     : state.recentConfessions->(
-//                Array.mapWithIndex((index, confession)=>
-//                  <ConfessionListItem 
-//                  //key={string_of_int(int_of_string(confession.id) + index)}
-//                  key={confession.id}
-//                  index
-//                  confession/>
-//                  )
-//              )
-//            ->React.array;
-//   }
+    {switch (state.confession) {
+     | Some(confession) =>
+       <div>
+         <h1> {React.string(confession.message)} </h1>
+         <h1> {React.string(confession.id)} </h1>
+         <ConfessionListItem
+           //key={string_of_int(int_of_string(confession.id) + index)}
+           key={confession.id}
+           index=1
+           confession
+         />
+         // {renderTitle(story)}
+         // {renderByline(story)}
+         // <CommentList story />
+         //<button>{React.string("click this button")}</button>
+         <form
+           className="StoryListItem_commentRow"
+           onSubmit={event => {
+             ReactEvent.Form.preventDefault(event);
 
+             let _ = ConfessionData.createComment(confession.id, state.input);
 
+             let newComment: ConfessionData.confessionComment = {
+               message: state.input,
+               id: state.input,
+               ts: 123,
+             };
+             Js.log(confession.comments);
+             Js.log(newComment);
 
+             let newCommentArray = [|newComment|];
 
-{switch (state.confession) {
-    | Some(confession) =>
-      <div>
-      <h1> {React.string(confession.message)}</h1>
-      <h1> {React.string(confession.id)}</h1>
-      <ConfessionListItem 
-                 //key={string_of_int(int_of_string(confession.id) + index)}
-                 key={confession.id}
-                 index=1
-                 confession= confession
-                 />
+             let newComments: ConfessionData.comments = {
+               commentsArray:
+                 Array.concat(
+                   confession.comments.commentsArray,
+                   newCommentArray,
+                 ),
+             };
 
-      
-       // {renderTitle(story)}
-       // {renderByline(story)}
-       // <CommentList story />
-      
+             let newData: ConfessionData.confession = {
+               message: confession.message,
+               id: confession.id,
+               ts: confession.ts,
+               comments: newComments,
+             };
 
-       //<button>{React.string("click this button")}</button>
+             dispatch(Loaded(newData));
 
-       <form  className="StoryListItem_commentRow"
-       onSubmit={event => {
-       ReactEvent.Form.preventDefault(event);
+             //myfunc(state.input);
+             //let value = state.input;
+             Js.log("gonna submit ");
+           }}>
+           //let _ = ConfessionData.createConfession(value);
 
-
-       let _ = ConfessionData.createComment(confession.id, state.input);  
-
-       let newComment : ConfessionData.confessionComment = {
-        message: state.input,
-         id: state.input,
-         ts:123
-       }
-       Js.log(confession.comments)
-       Js.log(newComment)
-
-       let newCommentArray = [|newComment|]
-
-      let newComments : ConfessionData.comments ={
-       commentsArray : Array.concat(confession.comments.commentsArray, newCommentArray)
-      }
-
-       let newData : ConfessionData.confession = {
-         message: confession.message,
-         id: confession.id,
-         ts: confession.ts,
-         comments: newComments
-        }
-
-        dispatch(Loaded(newData));
-
-
-       //myfunc(state.input);
-       //let value = state.input;
-       Js.log("gonna submit " )
-       //let _ = ConfessionData.createConfession(value);       
-       }}>
-
-       <label htmlFor="search"> {ReasonReact.string("Leave A  Comment")} </label>
-                <textarea
-                id="search"
-                name="search "
-                value={state.input}
-                onChange={event => {
-                    let value = ReactEvent.Form.target(event)##value;
-                    dispatch(UpdateInput(value));
-
-                }}
-                />
-
-       <button type_="submit">
-       {ReasonReact.string("Submit")}
-       </button>
-   </form>
-
-
-
-
-
-
-
-
-
-
-      </div>
-    | None => React.string("loading")
-    }}
+             <label htmlFor="search">
+               {ReasonReact.string("Leave A  Comment")}
+             </label>
+             <textarea
+               id="search"
+               name="search "
+               value={state.input}
+               onChange={event => {
+                 let value = ReactEvent.Form.target(event)##value;
+                 dispatch(UpdateInput(value));
+               }}
+             />
+             <button type_="submit"> {ReasonReact.string("Submit")} </button>
+           </form>
+       </div>
+     | None => React.string("loading")
+     }}
   </div>;
+  //   }
+  //            ->React.array;
+  //              )
+  //                  )
+  //                  confession/>
+  //                  index
+  //                  key={confession.id}
+  //                  //key={string_of_int(int_of_string(confession.id) + index)}
+  //                  <ConfessionListItem
+  //                Array.mapWithIndex((index, confession)=>
+  //     : state.recentConfessions->(
+  //     ? ReasonReact.string("Loading...")
+  //   {state.loading
 };
