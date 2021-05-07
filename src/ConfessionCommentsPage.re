@@ -65,17 +65,17 @@ let make = (~id) => {
                  key={confession.id}
                  index=1
                  confession= confession
-                 showCommentInput = true/>
+                 />
 
       
        // {renderTitle(story)}
        // {renderByline(story)}
        // <CommentList story />
-       {React.string("info is here")}
+      
 
        //<button>{React.string("click this button")}</button>
 
-       <form  
+       <form  className="StoryListItem_commentRow"
        onSubmit={event => {
        ReactEvent.Form.preventDefault(event);
 
@@ -112,7 +112,7 @@ let make = (~id) => {
        //let _ = ConfessionData.createConfession(value);       
        }}>
 
-       <label htmlFor="search"> {ReasonReact.string("Search")} </label>
+       <label htmlFor="search"> {ReasonReact.string("Leave A  Comment")} </label>
                 <textarea
                 id="search"
                 name="search "
@@ -125,7 +125,7 @@ let make = (~id) => {
                 />
 
        <button type_="submit">
-       {ReasonReact.string("Submit Search")}
+       {ReasonReact.string("Submit")}
        </button>
    </form>
 

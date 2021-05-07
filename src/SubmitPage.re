@@ -65,7 +65,7 @@ type action =
                 }}
                 />
                 <button type_="submit">
-                {ReasonReact.string("Submit Search")}
+                {ReasonReact.string("Submit")}
                 </button>
             </form>
             

@@ -20,7 +20,7 @@ let make = () => {
         switch (action) {
         | Loading => {...state, loading: true}
         | Loaded(data) =>
-          let updatedRecentConfessions = Array.concat(state.recentConfessions, data);
+          let updatedRecentConfessions = Array.reverse(Array.concat(state.recentConfessions, data));
           {recentConfessions: updatedRecentConfessions, loading: false};
         },
       initialState,
@@ -49,7 +49,7 @@ let make = () => {
                  key={confession.id}
                  index
                  confession
-                 showCommentInput = false/>
+                 />
                  )
            ->React.array;          
           }
