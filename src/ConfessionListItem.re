@@ -5,7 +5,7 @@ requireCSS("src/StoryListItem.css");
 let commentIcon = requireAssetURI("src/comment.png");
 
 [@react.component]
-let make = (~confession: ConfessionData.confession, ~index: int, ~showCommentInput = true, ()) => {
+let make = (~confession: ConfessionData.confession, ~index: int,  ()) => {
   
   let renderIndex = () =>
     <aside className="StoryListItem_storyIndex">
@@ -47,25 +47,29 @@ let make = (~confession: ConfessionData.confession, ~index: int, ~showCommentInp
 
 
   <>  
-    {showCommentInput
-      ? ReasonReact.string("this will be the send comment button")
-      : ReasonReact.string("Change this to blank later")
-    }
+
     <div className="StoryListItem_itemRow">
 
     {renderArticleButton()}
     {renderCommentsButton()}
-    // <b>{React.string(confession.message)}</b>
+    </div>
+    <br/>
+     <b className="StoryListItem_commentRow">{React.string("Comments")}</b>
+    <div >
     {
         {   
         confession.comments.commentsArray
             ->Belt.Array.map(item =>
                 //this will be changed to CommentListItemLater
-                <b key={item.id}> {React.string(item.message)} </b>
+                //<div className="StoryListItem_itemRow">
+                <span className="StoryListItem_commentRow"  key={item.id}> {React.string(item.message)} </span>
+                //</div>
             )
             ->React.array
         }
         ;}
-    </div>
+        <br/>
+        </div>
+ 
     </>
 };

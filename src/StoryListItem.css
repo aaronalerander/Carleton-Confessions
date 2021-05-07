@@ -56,6 +56,16 @@
   cursor: default;
 }
 
+.StoryListItem_commentRow {
+  align-items: stretch;
+  border-bottom: solid 1px #eee;
+  display: flex;
+  margin-top: 6px;
+  margin-left: 30px;
+  margin-bottom: 6px;
+  cursor: default;
+}
+
 .StoryListItem_byline,
 .StoryListItem_commentsText {
   color: #999999;
