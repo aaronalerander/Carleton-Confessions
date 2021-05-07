@@ -69,9 +69,6 @@ let make = (~id) => {
 
              dispatch(Loaded(newData));
            }}>
-           <label htmlFor="search">
-             {ReasonReact.string("Leave A  Comment")}
-           </label>
            <textarea
              id="search"
              name="search "
@@ -81,7 +78,7 @@ let make = (~id) => {
                dispatch(UpdateInput(value));
              }}
            />
-           <button type_="submit"> {ReasonReact.string("Submit")} </button>
+           <button type_="submit"> {ReasonReact.string("Comment")} </button>
          </form>
        </div>
      | None => React.string("loading")
