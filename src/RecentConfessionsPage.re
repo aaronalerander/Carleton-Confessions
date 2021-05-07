@@ -1,5 +1,5 @@
 open Belt;
-open Utils;
+//open Utils;
 
 type state = {
   recentConfessions: ConfessionData.recentConfessions,
@@ -28,9 +28,7 @@ let make = () => {
     );
 
   React.useEffect0(() => {
-    ConfessionData.fetchConfessions(payload
-      //Js.log(payload))
-      => dispatch(Loaded(payload)))
+    ConfessionData.fetchConfessions(payload => dispatch(Loaded(payload)))
     |> ignore;
     None;
   });
@@ -41,12 +39,7 @@ let make = () => {
        : {
          state.recentConfessions
          ->Array.mapWithIndex((index, confession) =>
-             <ConfessionListItem
-               //key={string_of_int(int_of_string(confession.id) + index)}
-               key={confession.id}
-               index
-               confession
-             />
+             <ConfessionListItem key={confession.id} index confession />
            )
          ->React.array;
        }}

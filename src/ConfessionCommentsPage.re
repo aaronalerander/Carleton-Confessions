@@ -1,9 +1,8 @@
 open Belt;
-open Utils;
+//open Utils;
 
 type state = {
   confession: option(ConfessionData.confession),
-  //confession: ConfessionData.confession,
   input: string,
   submitted: bool,
 };
@@ -12,8 +11,6 @@ type action =
   | Loaded(ConfessionData.confession)
   | UpdateInput(string)
   | Submit;
-
-//let initialState = {confession: None, loading: true};
 
 [@react.component]
 let make = (~id) => {
@@ -29,9 +26,9 @@ let make = (~id) => {
     );
 
   React.useEffect0(() => {
-    ConfessionData.fetchConfessionWithComments(id, data
-      //Js.log(data)
-      => dispatch(Loaded(data)))
+    ConfessionData.fetchConfessionWithComments(id, data =>
+      dispatch(Loaded(data))
+    )
     |> ignore;
     None;
   });
@@ -40,23 +37,11 @@ let make = (~id) => {
     {switch (state.confession) {
      | Some(confession) =>
        <div>
-         <h1> {React.string(confession.message)} </h1>
-         <h1> {React.string(confession.id)} </h1>
-         <ConfessionListItem
-           //key={string_of_int(int_of_string(confession.id) + index)}
-           key={confession.id}
-           index=1
-           confession
-         />
-         // {renderTitle(story)}
-         // {renderByline(story)}
-         // <CommentList story />
-         //<button>{React.string("click this button")}</button>
+         <ConfessionListItem key={confession.id} index=1 confession />
          <form
            className="StoryListItem_commentRow"
            onSubmit={event => {
              ReactEvent.Form.preventDefault(event);
-
              let _ = ConfessionData.createComment(confession.id, state.input);
 
              let newComment: ConfessionData.confessionComment = {
@@ -64,8 +49,6 @@ let make = (~id) => {
                id: state.input,
                ts: 123,
              };
-             Js.log(confession.comments);
-             Js.log(newComment);
 
              let newCommentArray = [|newComment|];
 
@@ -85,42 +68,23 @@ let make = (~id) => {
              };
 
              dispatch(Loaded(newData));
-
-             //myfunc(state.input);
-             //let value = state.input;
-             Js.log("gonna submit ");
            }}>
-           //let _ = ConfessionData.createConfession(value);
-
-             <label htmlFor="search">
-               {ReasonReact.string("Leave A  Comment")}
-             </label>
-             <textarea
-               id="search"
-               name="search "
-               value={state.input}
-               onChange={event => {
-                 let value = ReactEvent.Form.target(event)##value;
-                 dispatch(UpdateInput(value));
-               }}
-             />
-             <button type_="submit"> {ReasonReact.string("Submit")} </button>
-           </form>
+           <label htmlFor="search">
+             {ReasonReact.string("Leave A  Comment")}
+           </label>
+           <textarea
+             id="search"
+             name="search "
+             value={state.input}
+             onChange={event => {
+               let value = ReactEvent.Form.target(event)##value;
+               dispatch(UpdateInput(value));
+             }}
+           />
+           <button type_="submit"> {ReasonReact.string("Submit")} </button>
+         </form>
        </div>
      | None => React.string("loading")
      }}
   </div>;
-  //   }
-  //            ->React.array;
-  //              )
-  //                  )
-  //                  confession/>
-  //                  index
-  //                  key={confession.id}
-  //                  //key={string_of_int(int_of_string(confession.id) + index)}
-  //                  <ConfessionListItem
-  //                Array.mapWithIndex((index, confession)=>
-  //     : state.recentConfessions->(
-  //     ? ReasonReact.string("Loading...")
-  //   {state.loading
 };
