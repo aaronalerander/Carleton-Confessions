@@ -20,39 +20,35 @@ let make = () => {
         switch (action) {
         | Loading => {...state, loading: true}
         | Loaded(data) =>
-          let updatedRecentConfessions = Array.reverse(Array.concat(state.recentConfessions, data));
+          let updatedRecentConfessions =
+            Array.reverse(Array.concat(state.recentConfessions, data));
           {recentConfessions: updatedRecentConfessions, loading: false};
         },
       initialState,
     );
 
   React.useEffect0(() => {
-    ConfessionData.fetchConfessions(payload =>
-    //Js.log(payload))
-    dispatch(Loaded(payload))
-    )
+    ConfessionData.fetchConfessions(payload
+      //Js.log(payload))
+      => dispatch(Loaded(payload)))
     |> ignore;
     None;
   });
 
   <div>
-  {state.loading
-    ? ReasonReact.string("Loading...")
-
-    : 
-    {state.recentConfessions->
-              
-               Array.mapWithIndex((index, confession)=>
-               
-                 <ConfessionListItem 
-                 //key={string_of_int(int_of_string(confession.id) + index)}
-                 key={confession.id}
-                 index
-                 confession
-                 />
-                 )
-           ->React.array;          
-          }
-  }
+    {state.loading
+       ? ReasonReact.string("Loading...")
+       : {
+         state.recentConfessions
+         ->Array.mapWithIndex((index, confession) =>
+             <ConfessionListItem
+               //key={string_of_int(int_of_string(confession.id) + index)}
+               key={confession.id}
+               index
+               confession
+             />
+           )
+         ->React.array;
+       }}
   </div>;
 };

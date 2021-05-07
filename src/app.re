@@ -1,12 +1,11 @@
-
 [@react.component]
 let make = () => {
   let url = ReasonReact.Router.useUrl();
 
   switch (url.path) {
- //| [] => <TopStoriesPage />
+  //| [] => <TopStoriesPage />
   | [] => <RecentConfessionsPage />
-  | ["submit"] => <SubmitPage  />
+  | ["submit"] => <SubmitPage />
   //| ["comments", id] => <CommentsPage id=int_of_string(id) />
   | ["comments", id] => <ConfessionCommentsPage id />
   | _ => <NotFound />

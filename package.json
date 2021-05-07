@@ -1,5 +1,5 @@
 {
-  "name": "reason-react-hacker-news",
+  "name": "carleton-confessions",
   "private": true,
   "version": "0.0.0",
   "description": "",
@@ -18,7 +18,6 @@
   },
   "keywords": [],
   "author": "James Friend and Alain Armand <aarmand.inbox@gmail.com>",
-  "license": "MIT",
   "dependencies": {
     "@glennsl/bs-json": "^4.0.0",
     "bs-fetch": "^0.5.0",
