@@ -1,5 +1,4 @@
 open Belt;
-//open Utils;
 
 type state = {
   recentConfessions: ConfessionData.recentConfessions,

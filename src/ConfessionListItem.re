@@ -63,7 +63,6 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
              {React.string("-" ++ item.message)}
            </span>
          )
-       //</div>
        ->React.array}
       <br />
     </div>

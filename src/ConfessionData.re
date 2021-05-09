@@ -1,5 +1,3 @@
-//open Belt;
-
 let faunaUrl = "https://graphql.fauna.com/graphql";
 
 type confessionComment = {
@@ -42,7 +40,6 @@ module Decode = {
       commentsArray: json |> field("data", array(decodeConfessionComment)),
     };
 
-  //this should say decodeConfession for prober varible names
   let decodeConfessions = json =>
     Json.Decode.{
       message: json |> field("message", string),
