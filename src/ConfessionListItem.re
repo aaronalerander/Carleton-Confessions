@@ -50,14 +50,11 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
     <b className="StoryListItem_commentRow"> {React.string("Comments")} </b>
     <div>
       {confession.comments.commentsArray
-       ->Belt.Array.map(item
-           //this will be changed to CommentListItemLater
-           //<div className="StoryListItem_itemRow">
-           =>
-             <span className="StoryListItem_commentRow" key={item.id}>
-               {React.string("-" ++ item.message)}
-             </span>
-           )
+       ->Belt.Array.map(item =>
+           <span className="StoryListItem_commentRow" key={item.id}>
+             {React.string("-" ++ item.message)}
+           </span>
+         )
        //</div>
        ->React.array}
       <br />

@@ -1,6 +1,6 @@
 open Utils;
 
-requireCSS("src/NotFound.css");
+requireCSS("src/StoryListItem.css");
 
 let notFoundImage = requireAssetURI("src/notfound404.png");
 
