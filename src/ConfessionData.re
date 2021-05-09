@@ -161,8 +161,8 @@ let fetchConfessions = callback =>
             Js.Json.stringify(Js.Json.object_(allConfessionsQueryPayload)),
           ),
         ~headers=
-          Fetch.HeadersInit.make({
-            "Authorization": "Bearer fnAEIZfYiPACBESKBQfn85i6_kS91Z7d6kMlb5Rj",
+          Fetch.HeadersInit.make({            
+            "Authorization": "Bearer " ++ Env.token,
           }),
         (),
       ),
@@ -200,7 +200,7 @@ let fetchConfessionWithComments = (id, callback) => {
           ),
         ~headers=
           Fetch.HeadersInit.make({
-            "Authorization": "Bearer fnAEIZfYiPACBESKBQfn85i6_kS91Z7d6kMlb5Rj",
+            "Authorization": "Bearer " ++ Env.token,
           }),
         (),
       ),
@@ -242,7 +242,7 @@ let createConfession = confession => {
           ),
         ~headers=
           Fetch.HeadersInit.make({
-            "Authorization": "Bearer fnAEIZfYiPACBESKBQfn85i6_kS91Z7d6kMlb5Rj",
+            "Authorization": "Bearer " ++ Env.token,
           }),
         (),
       ),
@@ -270,7 +270,7 @@ let createComment = (id, comment) => {
           ),
         ~headers=
           Fetch.HeadersInit.make({
-            "Authorization": "Bearer fnAEIZfYiPACBESKBQfn85i6_kS91Z7d6kMlb5Rj",
+            "Authorization": "Bearer " ++ Env.token,
           }),
         (),
       ),
