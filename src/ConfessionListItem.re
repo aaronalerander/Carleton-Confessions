@@ -1,41 +1,47 @@
 open Utils;
 
-requireCSS("src/StoryListItem.css");
+requireCSS("src/ConfessionListItem.css");
 
 let commentIcon = requireAssetURI("src/comment.png");
 
 [@react.component]
 let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
   let renderIndex = () =>
-    <aside className="StoryListItem_storyIndex">
+    <aside className="ConfessionListItem_storyIndex">
       {React.string(string_of_int(index + 1))}
     </aside>;
 
   let renderTitle = () => {
     let content = React.string(confession.message);
-    <header className="StoryListItem_storyTitle">
+    <header className="ConfessionListItem_storyTitle">
       <Link
-        href={"/comments/" ++ confession.id} className="StoryListItem_link">
+        href={"/comments/" ++ confession.id}
+        className="ConfessionListItem_link">
         content
       </Link>
     </header>;
   };
 
   let renderArticleButton = () =>
-    <div className="StoryListItem_flexRow">
+    <div className="ConfessionListItem_flexRow">
       {renderIndex()}
-      <div className="StoryListItem_storyCell"> {renderTitle()} </div>
+      <div className="ConfessionListItem_storyCell"> {renderTitle()} </div>
     </div>;
 
   let renderCommentsButton = () =>
-    <div className="StoryListItem_commentsCell">
+    <div className="ConfessionListItem_commentsCell">
       <Link
-        href={"/comments/" ++ confession.id} className="StoryListItem_link">
+        href={"/comments/" ++ confession.id}
+        className="ConfessionListItem_link">
         <div>
-          <img alt="comments" className="StoryListItem_icon" src=commentIcon />
+          <img
+            alt="comments"
+            className="ConfessionListItem_icon"
+            src=commentIcon
+          />
         </div>
         <div>
-          <span className="StoryListItem_commentsText">
+          <span className="ConfessionListItem_commentsText">
             {React.string(" View All Comments")}
           </span>
         </div>
@@ -43,15 +49,17 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
     </div>;
 
   <>
-    <div className="StoryListItem_itemRow">
+    <div className="ConfessionListItem_itemRow">
       {renderArticleButton()}
       {renderCommentsButton()}
     </div>
-    <b className="StoryListItem_commentRow"> {React.string("Comments")} </b>
+    <b className="ConfessionListItem_commentRow">
+      {React.string("Comments")}
+    </b>
     <div>
       {confession.comments.commentsArray
        ->Belt.Array.map(item =>
-           <span className="StoryListItem_commentRow" key={item.id}>
+           <span className="ConfessionListItem_commentRow" key={item.id}>
              {React.string("-" ++ item.message)}
            </span>
          )
