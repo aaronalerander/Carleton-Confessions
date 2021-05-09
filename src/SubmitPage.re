@@ -1,6 +1,6 @@
 open Utils;
 
-requireCSS("src/ConfessionListItem.css");
+requireCSS("src/styles.css");
 
 type state = {
   input: string,
@@ -41,7 +41,7 @@ let make = _ => {
              }}>
              <textarea
                id="submit"
-               name="submit "
+               name="submit"
                placeholder="Enter your confession here..."
                className="ConfessionListItem_textArea"
                value={state.input}

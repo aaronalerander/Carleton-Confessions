@@ -1,6 +1,6 @@
 open Utils;
 
-requireCSS("src/ConfessionListItem.css");
+requireCSS("src/styles.css");
 
 let commentIcon = requireAssetURI("src/comment.png");
 
