@@ -39,7 +39,7 @@ let make = (~id) => {
        <div>
          <ConfessionListItem key={confession.id} index=1 confession />
          <form
-           className="StoryListItem_commentRow"
+           className="ConfessionListItem_commentRow"
            onSubmit={event => {
              ReactEvent.Form.preventDefault(event);
              let _ = ConfessionData.createComment(confession.id, state.input);

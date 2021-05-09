@@ -1,20 +1,20 @@
-.StoryListItem_link {
+.ConfessionListItem_link {
   color: black;
   text-decoration: none;
 }
 
-.StoryListItem_flexRow {
+.ConfessionListItem_flexRow {
   display: flex;
   flex: 1;
   padding: 8px;
 }
 
-.StoryListItem_icon {
+.ConfessionListItem_icon {
   width: 32px;
   height: 32px;
 }
 
-.StoryListItem_storyCell {
+.ConfessionListItem_storyCell {
   flex: 1;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -22,7 +22,7 @@
   align-items: stretch;
 }
 
-.StoryListItem_storyTitle {
+.ConfessionListItem_storyTitle {
   display: flex;
   flex: 0 0 auto;
   margin-bottom: 4px;
@@ -30,19 +30,19 @@
   font-weight: 700;
 }
 
-.StoryListItem_storyIndex {
+.ConfessionListItem_storyIndex {
   display: flex;
   flex: 0 0 auto;
   font-size: 18px;
   line-height: 1.2;
   margin-right: 12px;
 }
-.StoryListItem_storyIndex::after {
+.ConfessionListItem_storyIndex::after {
   display: block;
   content: ".";
 }
 
-.StoryListItem_itemRow {
+.ConfessionListItem_itemRow {
   align-items: stretch;
   border-top: solid 1px #eee;
   display: flex;
@@ -51,7 +51,7 @@
   cursor: default;
 }
 
-.StoryListItem_commentRow {
+.ConfessionListItem_commentRow {
   align-items: stretch;
   /* border-bottom: solid 1px #eee; */
   display: flex;
@@ -61,11 +61,11 @@
   cursor: default;
 }
 
-.StoryListItem_commentsText {
+.ConfessionListItem_commentsText {
   color: #999999;
 }
 
-.StoryListItem_commentsCell {
+.ConfessionListItem_commentsCell {
   align-items: center;
   display: flex;
   justify-content: center;
@@ -74,23 +74,23 @@
   width: 80px;
 }
 
-.StoryListItem_commentsText {
+.ConfessionListItem_commentsText {
   font-size: 15px;
   text-align: center;
   font-weight: bold;
   color: #000;
 }
 
-a:hover .StoryListItem_commentsText {
+a:hover .ConfessionListItem_commentsText {
   color: #000;
 }
 
-.StoryListItem_textArea {
+.ConfessionListItem_textArea {
   height: 200px;
   width: 800px;
 }
 
-.StoryListItem_button {
+.ConfessionListItem_button {
   background-color: #c53030; /* Green */
   border: none;
   color: white;

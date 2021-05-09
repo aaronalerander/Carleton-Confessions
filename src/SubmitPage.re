@@ -1,6 +1,6 @@
 open Utils;
 
-requireCSS("src/StoryListItem.css");
+requireCSS("src/ConfessionListItem.css");
 
 type state = {
   input: string,
@@ -43,14 +43,14 @@ let make = _ => {
                id="submit"
                name="submit "
                placeholder="Enter your confession here..."
-               className="StoryListItem_textArea"
+               className="ConfessionListItem_textArea"
                value={state.input}
                onChange={event => {
                  let value = ReactEvent.Form.target(event)##value;
                  dispatch(UpdateInput(value));
                }}
              />
-             <button type_="submit" className="StoryListItem_button">
+             <button type_="submit" className="ConfessionListItem_button">
                {ReasonReact.string("Submit")}
              </button>
            </form>}
