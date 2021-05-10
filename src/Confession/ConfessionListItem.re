@@ -2,7 +2,7 @@ open Utils;
 
 requireCSS("src/styles.css");
 
-let commentIcon = requireAssetURI("src/comment.png");
+let commentIcon = requireAssetURI("src/Confession/comment.png");
 
 [@react.component]
 let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
