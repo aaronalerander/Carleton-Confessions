@@ -1,1 +1,1 @@
-let token = "fnAEIZfYiPACBESKBQfn85i6_kS91Z7d6kMlb5Rj"; //this is an old api key that I revoked
+let token = "fnAEI4Wo9UACBm2Oc1TKpBNoL8RBcRlVVxgd8Qyi"; //old api key

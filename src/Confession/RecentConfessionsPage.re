@@ -3,13 +3,19 @@ open Belt;
 type state = {
   recentConfessions: ConfessionData.recentConfessions,
   loading: bool,
+  fetchError: bool,
 };
 
 type action =
   | Loaded(ConfessionData.recentConfessions)
-  | Loading;
+  | Loading
+  | FetchErrorOccured(string);
 
-let initialState = {recentConfessions: [||], loading: true};
+let initialState = {
+  recentConfessions: [||],
+  loading: true,
+  fetchError: false,
+};
 
 [@react.component]
 let make = () => {
@@ -19,28 +25,50 @@ let make = () => {
         switch (action) {
         | Loading => {...state, loading: true}
         | Loaded(data) =>
-          let updatedRecentConfessions =
-            Array.reverse(Array.concat(state.recentConfessions, data));
-          {recentConfessions: updatedRecentConfessions, loading: false};
+          let confessionsNewestToLatest = Array.reverse(data);
+          {
+            ...state,
+            recentConfessions: confessionsNewestToLatest,
+            loading: false,
+          };
+        | FetchErrorOccured(message) => {...state, fetchError: true}
         },
       initialState,
     );
 
   React.useEffect0(() => {
-    ConfessionData.fetchConfessions(payload => dispatch(Loaded(payload)))
-    |> ignore;
+    let callback = result => {
+      switch (result) {
+      | None => dispatch(FetchErrorOccured("None"))
+      | Some(confessions) => dispatch(Loaded(confessions))
+      };
+    };
+    ConfessionData.fetchConfessions(callback);
     None;
   });
 
-  <div>
-    {state.loading
-       ? ReasonReact.string("Loading...")
-       : {
-         state.recentConfessions
-         ->Array.mapWithIndex((index, confession) =>
-             <ConfessionListItem key={confession.id} index confession />
-           )
-         ->React.array;
-       }}
-  </div>;
+  switch (state) {
+  | {recentConfessions: _, loading: _, fetchError: true} =>
+    <div>
+      {ReasonReact.string(
+         "There was an error, please contact be at aaronalexander.inc@gmail.com",
+       )}
+    </div>
+
+  | {recentConfessions: _, loading: true, fetchError: _} =>
+    <div> {ReasonReact.string("Loading...")} </div>
+
+  | {recentConfessions: _, loading: false, fetchError: false} =>
+    <div>
+      {state.loading
+         ? ReasonReact.string("Loading...")
+         : {
+           state.recentConfessions
+           ->Array.mapWithIndex((index, confession) =>
+               <ConfessionListItem key={confession.id} index confession />
+             )
+           ->React.array;
+         }}
+    </div>
+  };
 };

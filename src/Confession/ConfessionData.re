@@ -161,9 +161,7 @@ let fetchConfessions = callback =>
             Js.Json.stringify(Js.Json.object_(allConfessionsQueryPayload)),
           ),
         ~headers=
-          Fetch.HeadersInit.make({            
-            "Authorization": "Bearer " ++ Env.token,
-          }),
+          Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
         (),
       ),
     )
@@ -173,12 +171,16 @@ let fetchConfessions = callback =>
          |> Decode.decodeResponse
          |> (
            decodedResponse =>
-             callback(decodedResponse.data.allConfessions.allConfessionsArray)
+             callback(
+               Some(decodedResponse.data.allConfessions.allConfessionsArray),
+             )
              |> resolve
          )
        )
+    |> catch(_error => callback(None) |> resolve)
     |> ignore
   );
+//|> ignore
 
 let fetchConfessionWithComments = (id, callback) => {
   let createConfessionWithCommentsQueryPayload = Js.Dict.empty();
@@ -199,9 +201,7 @@ let fetchConfessionWithComments = (id, callback) => {
             ),
           ),
         ~headers=
-          Fetch.HeadersInit.make({
-            "Authorization": "Bearer " ++ Env.token,
-          }),
+          Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
         (),
       ),
     )
@@ -212,12 +212,16 @@ let fetchConfessionWithComments = (id, callback) => {
          |> (
            decodeConfessionWithCommentsResponse =>
              callback(
-               decodeConfessionWithCommentsResponse.confessionWithCommentsdata.
-                 confession,
+               Some(
+                 decodeConfessionWithCommentsResponse.
+                   confessionWithCommentsdata.
+                   confession,
+               ),
              )
              |> resolve
          )
        )
+    |> catch(_error => callback(None) |> resolve)
     |> ignore
   );
 };
@@ -241,13 +245,12 @@ let createConfession = confession => {
             ),
           ),
         ~headers=
-          Fetch.HeadersInit.make({
-            "Authorization": "Bearer " ++ Env.token,
-          }),
+          Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
         (),
       ),
     )
     |> then_(Fetch.Response.json)
+    |> (json => Js.log(json))
     |> resolve
   );
 };
@@ -269,9 +272,7 @@ let createComment = (id, comment) => {
             Js.Json.stringify(Js.Json.object_(createCommentMutationPayload)),
           ),
         ~headers=
-          Fetch.HeadersInit.make({
-            "Authorization": "Bearer " ++ Env.token,
-          }),
+          Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
         (),
       ),
     )
