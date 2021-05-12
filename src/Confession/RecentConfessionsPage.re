@@ -48,17 +48,16 @@ let make = () => {
   });
 
   switch (state) {
-  | {recentConfessions: _, loading: _, fetchError: true} =>
+  | {fetchError: true} =>
     <div>
       {ReasonReact.string(
          "There was an error, please contact be at aaronalexander.inc@gmail.com",
        )}
     </div>
 
-  | {recentConfessions: _, loading: true, fetchError: _} =>
-    <div> {ReasonReact.string("Loading...")} </div>
+  | {loading: true} => <div> {ReasonReact.string("Loading...")} </div>
 
-  | {recentConfessions: _, loading: false, fetchError: false} =>
+  | {loading: false, fetchError: false} =>
     <div>
       {state.loading
          ? ReasonReact.string("Loading...")
