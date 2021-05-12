@@ -151,37 +151,36 @@ let createCommentMutation = (id, comment) => {
 };
 
 let fetchConfessions = callback =>
-  Js.Promise.
-    (
-      Fetch.fetchWithInit(
-        faunaUrl,
-        Fetch.RequestInit.make(
-          ~method_=Post,
-          ~body=
-            Fetch.BodyInit.make(
-              Js.Json.stringify(Js.Json.object_(allConfessionsQueryPayload)),
-            ),
-          ~headers=
-            Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
-          (),
-        ),
-      )
-      |> then_(Fetch.Response.json)
-      |> then_(json =>
-           json
-           |> Decode.decodeResponse
-           |> (
-             decodedResponse =>
-               callback(
-                 decodedResponse.data.allConfessions.allConfessionsArray,
-               )
-               |> resolve
-           )
+  Js.Promise.(
+    Fetch.fetchWithInit(
+      faunaUrl,
+      Fetch.RequestInit.make(
+        ~method_=Post,
+        ~body=
+          Fetch.BodyInit.make(
+            Js.Json.stringify(Js.Json.object_(allConfessionsQueryPayload)),
+          ),
+        ~headers=
+          Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
+        (),
+      ),
+    )
+    |> then_(Fetch.Response.json)
+    |> then_(json =>
+         json
+         |> Decode.decodeResponse
+         |> (
+           decodedResponse =>
+             callback(
+               Some(decodedResponse.data.allConfessions.allConfessionsArray),
+             )
+             |> resolve
          )
-      // |> catch(_error => resolve(None))
-      |> catch(_error => resolve(None))
-    );
-    //|> ignore
+       )
+    |> catch(_error => callback(None) |> resolve)
+    |> ignore
+  );
+//|> ignore
 
 let fetchConfessionWithComments = (id, callback) => {
   let createConfessionWithCommentsQueryPayload = Js.Dict.empty();
@@ -213,12 +212,16 @@ let fetchConfessionWithComments = (id, callback) => {
          |> (
            decodeConfessionWithCommentsResponse =>
              callback(
-               decodeConfessionWithCommentsResponse.confessionWithCommentsdata.
-                 confession,
+               Some(
+                 decodeConfessionWithCommentsResponse.
+                   confessionWithCommentsdata.
+                   confession,
+               ),
              )
              |> resolve
          )
        )
+    |> catch(_error => callback(None) |> resolve)
     |> ignore
   );
 };
@@ -247,6 +250,7 @@ let createConfession = confession => {
       ),
     )
     |> then_(Fetch.Response.json)
+    |> (json => Js.log(json))
     |> resolve
   );
 };
