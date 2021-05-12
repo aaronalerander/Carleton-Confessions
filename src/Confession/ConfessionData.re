@@ -19,13 +19,13 @@ type allConfessions = {allConfessionsArray: array(confession)};
 
 type data = {allConfessions};
 
-type response = {data};
+type response = {data}; //this needs to be renamed fool
 
 type confessionWithCommentsdata = {confession};
 
-type confessionWithCommentsresponse = {confessionWithCommentsdata};
+type confessionWithCommentsResponse = {confessionWithCommentsdata};
 
-type recentConfessions = array(confession);
+type recentConfessions = array(confession); // this is a definition for another file, I should think about moving this
 
 module Decode = {
   let decodeConfessionComment = json =>
@@ -42,9 +42,9 @@ module Decode = {
 
   let decodeConfessions = json =>
     Json.Decode.{
-      message: json |> field("message", string),
       id: json |> field("_id", string),
       ts: json |> field("_ts", int),
+      message: json |> field("message", string),
       comments: json |> field("comments", decodeComments),
     };
 
@@ -66,10 +66,21 @@ module Decode = {
       confession: json |> field("findConfessionByID", decodeConfessions),
     };
 
+  let decodeCreateConfessiondata = json =>
+    Json.Decode.{
+      confession: json |> field("createConfession", decodeConfessions),
+    };
+
   let decodeConfessionWithCommentsResponse = json =>
     Json.Decode.{
       confessionWithCommentsdata:
         json |> field("data", decodeConfessionWithCommentsdata),
+    };
+
+  let decodeCreateConfessionResponse = json =>
+    Json.Decode.{
+      confessionWithCommentsdata:
+        json |> field("data", decodeCreateConfessiondata),
     };
 };
 
@@ -127,6 +138,13 @@ let createConfessionMutation = confession => {
     _id
     _ts
     message
+    comments{
+      data{
+          message
+          _id
+          _ts
+    }
+  }
   }
 }";
 };
@@ -226,7 +244,7 @@ let fetchConfessionWithComments = (id, callback) => {
   );
 };
 
-let createConfession = confession => {
+let createConfession = (confession, callback) => {
   let createConfessionMutationPayload = Js.Dict.empty();
   Js.Dict.set(
     createConfessionMutationPayload,
@@ -250,10 +268,92 @@ let createConfession = confession => {
       ),
     )
     |> then_(Fetch.Response.json)
-    |> (json => Js.log(json))
-    |> resolve
+    |> then_(json =>
+         json
+         |> Decode.decodeCreateConfessionResponse
+         //|> Decode.decodeConfessionWithCommentsResponse
+         |> (
+           decodeCreateConfessionResponse =>
+             callback(
+               Some(
+                 decodeCreateConfessionResponse.confessionWithCommentsdata.
+                   confession,
+               ) //what is above vould be wrong type, confessionWithCommentsdata
+             )
+             |> resolve
+         )
+       )
+    |> catch(_error => callback(None) |> resolve)
+    |> ignore
   );
 };
+
+// let createConfession = (confession, callback) => {
+//   // creating the confession mutation payload should be a funciton call to clean this up
+//   let createConfessionMutationPayload = Js.Dict.empty();
+//   Js.Dict.set(
+//     createConfessionMutationPayload,
+//     "query",
+//     Js.Json.string(createConfessionMutation(confession)),
+//   );
+//   Js.Promise.(
+//     Fetch.fetchWithInit(
+//       faunaUrl,
+//       Fetch.RequestInit.make(
+//         ~method_=Post,
+//         ~body=
+//           Fetch.BodyInit.make(
+//             Js.Json.stringify(
+//               Js.Json.object_(createConfessionMutationPayload),
+//             ),
+//           ),
+//         ~headers=
+//           Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
+//         (),
+//       ),
+//     )
+//     |> then_(response => {
+//          response |> Fetch.Response.ok
+//            ? {
+//              callback(Some(true)) |> resolve;
+//            }
+//            : {
+//              callback(None) |> resolve;
+//            }
+//        })
+//     |> catch(_error => callback(None) |> resolve)
+//     |> ignore
+//   );
+// };
+
+// let createConfession = confession => {
+//   let createConfessionMutationPayload = Js.Dict.empty();
+//   Js.Dict.set(
+//     createConfessionMutationPayload,
+//     "query",
+//     Js.Json.string(createConfessionMutation(confession)),
+//   );
+//   Js.Promise.(
+//     Fetch.fetchWithInit(
+//       faunaUrl,
+//       Fetch.RequestInit.make(
+//         ~method_=Post,
+//         ~body=
+//           Fetch.BodyInit.make(
+//             Js.Json.stringify(
+//               Js.Json.object_(createConfessionMutationPayload),
+//             ),
+//           ),
+//         ~headers=
+//           Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
+//         (),
+//       ),
+//     )
+//     |> then_(Fetch.Response.json)
+//     |> (json => Js.log(json)) //i dont think you should be loggin this g
+//     |> resolve
+//   );
+// };
 
 let createComment = (id, comment) => {
   let createCommentMutationPayload = Js.Dict.empty();
