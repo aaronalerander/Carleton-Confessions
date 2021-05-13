@@ -15,6 +15,8 @@ type confession = {
   comments,
 };
 
+//go to rename alot of these
+
 type allConfessions = {allConfessionsArray: array(confession)};
 
 type data = {allConfessions};
@@ -24,6 +26,8 @@ type response = {data}; //this needs to be renamed fool
 type confessionWithCommentsdata = {confession};
 
 type confessionWithCommentsResponse = {confessionWithCommentsdata};
+
+type testWrapper = {confessionWithCommentsResponse};
 
 type recentConfessions = array(confession); // this is a definition for another file, I should think about moving this
 
@@ -61,6 +65,7 @@ module Decode = {
   let decodeResponse = json =>
     Json.Decode.{data: json |> field("data", decodeData)};
 
+  //im pretty sure it is decode confession idiot
   let decodeConfessionWithCommentsdata = json =>
     Json.Decode.{
       confession: json |> field("findConfessionByID", decodeConfessions),
@@ -69,6 +74,11 @@ module Decode = {
   let decodeCreateConfessiondata = json =>
     Json.Decode.{
       confession: json |> field("createConfession", decodeConfessions),
+    };
+
+  let decodeCreateCommentdata = json =>
+    Json.Decode.{
+      confession: json |> field("parentConfession", decodeConfessions),
     };
 
   let decodeConfessionWithCommentsResponse = json =>
@@ -81,6 +91,18 @@ module Decode = {
     Json.Decode.{
       confessionWithCommentsdata:
         json |> field("data", decodeCreateConfessiondata),
+    };
+
+  let decodeCreateCommentResponse = json =>
+    Json.Decode.{
+      confessionWithCommentsdata:
+        json |> field("createComment", decodeCreateCommentdata),
+    };
+
+  let biggerdecodeCreateCommentResponse = json =>
+    Json.Decode.{
+      confessionWithCommentsResponse:
+        json |> field("data", decodeCreateCommentResponse),
     };
 };
 
@@ -161,13 +183,23 @@ let createCommentMutation = (id, comment) => {
   ++ "\"
       }
     }){
-      _id
-      _ts
-      message
+      parentConfession{
+        _id
+        _ts
+        message
+        comments{
+            data{
+                message
+                _id
+                _ts
+            }
+        }
+      }
     }
   }";
 };
 
+//see if you can make these  massive functions smaller for readibility
 let fetchConfessions = callback =>
   Js.Promise.(
     Fetch.fetchWithInit(
@@ -288,74 +320,7 @@ let createConfession = (confession, callback) => {
   );
 };
 
-// let createConfession = (confession, callback) => {
-//   // creating the confession mutation payload should be a funciton call to clean this up
-//   let createConfessionMutationPayload = Js.Dict.empty();
-//   Js.Dict.set(
-//     createConfessionMutationPayload,
-//     "query",
-//     Js.Json.string(createConfessionMutation(confession)),
-//   );
-//   Js.Promise.(
-//     Fetch.fetchWithInit(
-//       faunaUrl,
-//       Fetch.RequestInit.make(
-//         ~method_=Post,
-//         ~body=
-//           Fetch.BodyInit.make(
-//             Js.Json.stringify(
-//               Js.Json.object_(createConfessionMutationPayload),
-//             ),
-//           ),
-//         ~headers=
-//           Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
-//         (),
-//       ),
-//     )
-//     |> then_(response => {
-//          response |> Fetch.Response.ok
-//            ? {
-//              callback(Some(true)) |> resolve;
-//            }
-//            : {
-//              callback(None) |> resolve;
-//            }
-//        })
-//     |> catch(_error => callback(None) |> resolve)
-//     |> ignore
-//   );
-// };
-
-// let createConfession = confession => {
-//   let createConfessionMutationPayload = Js.Dict.empty();
-//   Js.Dict.set(
-//     createConfessionMutationPayload,
-//     "query",
-//     Js.Json.string(createConfessionMutation(confession)),
-//   );
-//   Js.Promise.(
-//     Fetch.fetchWithInit(
-//       faunaUrl,
-//       Fetch.RequestInit.make(
-//         ~method_=Post,
-//         ~body=
-//           Fetch.BodyInit.make(
-//             Js.Json.stringify(
-//               Js.Json.object_(createConfessionMutationPayload),
-//             ),
-//           ),
-//         ~headers=
-//           Fetch.HeadersInit.make({"Authorization": "Bearer " ++ Env.token}),
-//         (),
-//       ),
-//     )
-//     |> then_(Fetch.Response.json)
-//     |> (json => Js.log(json)) //i dont think you should be loggin this g
-//     |> resolve
-//   );
-// };
-
-let createComment = (id, comment) => {
+let createComment = (id, comment, callback) => {
   let createCommentMutationPayload = Js.Dict.empty();
   Js.Dict.set(
     createCommentMutationPayload,
@@ -377,6 +342,23 @@ let createComment = (id, comment) => {
       ),
     )
     |> then_(Fetch.Response.json)
-    |> resolve
+    |> then_(json =>
+         json
+         |> Decode.biggerdecodeCreateCommentResponse
+         //|> Decode.decodeConfessionWithCommentsResponse
+         |> (
+           decodeCreateConfessionResponse =>
+             callback(
+               Some(
+                 decodeCreateConfessionResponse.confessionWithCommentsResponse.
+                   confessionWithCommentsdata.
+                   confession,
+               ) //what is above vould be wrong type, confessionWithCommentsdata
+             )
+             |> resolve
+         )
+       )
+    |> catch(_error => Js.log(_error) /*callback(None)*/ |> resolve)
+    |> ignore
   );
 };

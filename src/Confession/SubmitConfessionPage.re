@@ -29,8 +29,8 @@ let make = _ => {
       (state, action) =>
         switch (action) {
         | UpdateInput(newInput) => {...state, input: newInput}
-        | Submit => {...state, loading: false, submitted: true}
         | Loading => {...state, loading: true}
+        | Submit => {...state, loading: false, submitted: true}
         | PostErrorOccured(message) => {
             ...state,
             loading: false,
