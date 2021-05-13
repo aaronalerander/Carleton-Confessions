@@ -358,7 +358,7 @@ let createComment = (id, comment, callback) => {
              |> resolve
          )
        )
-    |> catch(_error => Js.log(_error) /*callback(None)*/ |> resolve)
+    |> catch(_error => callback(None) |> resolve)
     |> ignore
   );
 };

@@ -22,6 +22,15 @@
   align-items: stretch;
 }
 
+.ConfessionCommentsPageListItem_storyTitle {
+  display: flex;
+  flex: 0 0 auto;
+  margin-bottom: 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #c53030;
+}
+
 .ConfessionListItem_storyTitle {
   display: flex;
   flex: 0 0 auto;
@@ -42,13 +51,23 @@
   content: ".";
 }
 
-.ConfessionListItem_itemRow {
+.ConfessionListItem_headingRow {
   align-items: stretch;
-  border-top: solid 1px #eee;
+  /* border: solid 1px #eee; */
   display: flex;
   margin-top: 6px;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
   cursor: default;
+}
+
+.ConfessionListItem_itemRow {
+  /* align-items: stretch; */
+  border: solid 1px #eee;
+  margin-bottom: 12px;
+  /* display: flex;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  cursor: default; */
 }
 
 .ConfessionListItem_commentRow {

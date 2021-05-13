@@ -47,27 +47,20 @@ let make = () => {
     None;
   });
 
+  let renderConfessions = () =>
+    <div>
+      {state.recentConfessions
+       ->Array.mapWithIndex((index, confession) =>
+           <ConfessionListItem key={confession.id} index confession />
+         )
+       ->React.array}
+    </div>;
+
   switch (state) {
-  | {fetchError: true} =>
-    <div>
-      {ReasonReact.string(
-         "There was an error, please contact be at aaronalexander.inc@gmail.com",
-       )}
-    </div>
+  | {fetchError: true} => <ErrorMessage />
 
-  | {loading: true} => <div> {ReasonReact.string("Loading...")} </div>
+  | {loading: true} => <LoadingMessage />
 
-  | {loading: false, fetchError: false} =>
-    <div>
-      {state.loading
-         ? ReasonReact.string("Loading...")
-         : {
-           state.recentConfessions
-           ->Array.mapWithIndex((index, confession) =>
-               <ConfessionListItem key={confession.id} index confession />
-             )
-           ->React.array;
-         }}
-    </div>
+  | {loading: false, fetchError: false} => renderConfessions()
   };
 };
