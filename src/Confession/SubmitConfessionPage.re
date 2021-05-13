@@ -53,8 +53,7 @@ let make = _ => {
     ();
   };
 
-  switch (state) {
-  | {input: _, submitted: false, loading: false, postError: false} =>
+  let renderForm = () =>
     <div>
       <form
         onSubmit={event => {
@@ -77,25 +76,27 @@ let make = _ => {
           {ReasonReact.string("Submit")}
         </button>
       </form>
-    </div>
+    </div>;
 
-  | {input: _, loading: true, submitted: false, postError: false} =>
-    <div> {ReasonReact.string("Currently Sending To The Back End...")} </div>
-
-  | {input: _, submitted: true, loading: false, postError: false} =>
+  let renderSubmittedMessage = () =>
     <div>
       <a href="/">
         {ReasonReact.string(
            "You have submitted, click this link to view confessions",
          )}
       </a>
-    </div>
+    </div>;
 
-  | {input: _, submitted: _, loading: _, postError: true} =>
-    <div>
-      {ReasonReact.string(
-         "There was an error, please contact be at aaronalexander.inc@gmail.com",
-       )}
-    </div>
+  switch (state) {
+  | {input: _, submitted: false, loading: false, postError: false} =>
+    renderForm()
+
+  | {input: _, loading: true, submitted: false, postError: false} =>
+    <SendingMessage />
+
+  | {input: _, submitted: true, loading: false, postError: false} =>
+    renderSubmittedMessage()
+
+  | {input: _, submitted: _, loading: _, postError: true} => <ErrorMessage />
   };
 };

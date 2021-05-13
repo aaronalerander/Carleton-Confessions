@@ -7,53 +7,23 @@ requireCSS("src/styles.css");
 let commentIcon = requireAssetURI("src/Confession/comment.png");
 
 [@react.component]
-let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
-  let renderIndex = () =>
-    <aside className="ConfessionListItem_storyIndex">
-      {React.string(string_of_int(index + 1))}
-    </aside>;
-
+let make = (~confession: ConfessionData.confession, ()) => {
   let renderTitle = () => {
+    //what title bitch, its a confession, rename this
     let content = React.string(confession.message);
-    <header className="ConfessionListItem_storyTitle">
-      <Link
-        href={"/comments/" ++ confession.id}
-        className="ConfessionListItem_link">
-        content
-      </Link>
-    </header>;
-  };
-
-  let renderArticleButton = () =>
     <div className="ConfessionListItem_flexRow">
-      {renderIndex()}
-      <div className="ConfessionListItem_storyCell"> {renderTitle()} </div>
+      <div className="ConfessionListItem_storyCell">
+        <header className="ConfessionCommentsPageListItem_storyTitle">
+          content
+        </header>
+      </div>
     </div>;
-
-  let renderCommentsButton = () =>
-    <div className="ConfessionListItem_commentsCell">
-      <Link
-        href={"/comments/" ++ confession.id}
-        className="ConfessionListItem_link">
-        <div>
-          <img
-            alt="comments"
-            className="ConfessionListItem_icon"
-            src=commentIcon
-          />
-        </div>
-        <div>
-          <span className="ConfessionListItem_commentsText">
-            {React.string("Comments")}
-          </span>
-        </div>
-      </Link>
-    </div>;
+  };
 
   let renderCommentsList = () =>
     <div>
       <h4 className="ConfessionListItem_commentRow">
-        {React.string("First Comments")}
+        {React.string("Comments")}
       </h4>
       <div>
         {confession.comments.commentsArray
@@ -76,10 +46,7 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
 
   <>
     <div className="ConfessionListItem_itemRow">
-      <div className="ConfessionListItem_headingRow">
-        {renderArticleButton()}
-        {renderCommentsButton()}
-      </div>
+      <div className="ConfessionListItem_headingRow"> {renderTitle()} </div>
       {Array.length(confession.comments.commentsArray) > 0
          ? renderCommentsList() : renderNoCommentsMessage()}
     </div>
