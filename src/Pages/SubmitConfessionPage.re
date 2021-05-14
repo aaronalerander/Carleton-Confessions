@@ -2,23 +2,25 @@ open Utils;
 
 requireCSS("src/styles.css");
 
+//maybe call it post sucess becaues that is more descriptive of the situation
+
 type state = {
   input: string,
-  loading: bool,
-  submitted: bool,
+  submitting: bool,
+  successfulSubmit: bool,
   postError: bool,
 };
 
 type action =
   | UpdateInput(string)
-  | Submit
-  | Loading
-  | PostErrorOccured(string);
+  | Submitting
+  | SuccessfulSubmit
+  | PostErrorOccured;
 
 let initialState = {
   input: "",
-  submitted: false,
-  loading: false,
+  successfulSubmit: false,
+  submitting: false,
   postError: false,
 };
 
@@ -29,25 +31,25 @@ let make = _ => {
       (state, action) =>
         switch (action) {
         | UpdateInput(newInput) => {...state, input: newInput}
-        | Loading => {...state, loading: true}
-        | Submit => {...state, loading: false, submitted: true}
-        | PostErrorOccured(message) => {
+        | Submitting => {...state, submitting: true}
+        | SuccessfulSubmit => {
             ...state,
-            loading: false,
-            postError: true,
+            submitting: false,
+            successfulSubmit: true,
           }
+        | PostErrorOccured => {...state, submitting: false, postError: true}
         },
       initialState,
     );
 
   let submitConfession = () => {
-    dispatch(Loading);
+    dispatch(Submitting);
     let value = state.input;
     let _ =
-      ConfessionData.createConfession(value, callback =>
+      Api.createConfession(value, callback =>
         switch (callback) {
-        | None => dispatch(PostErrorOccured("None"))
-        | Some(confession) => dispatch(Submit)
+        | None => dispatch(PostErrorOccured)
+        | Some(confession) => dispatch(SuccessfulSubmit)
         }
       );
     ();
@@ -65,14 +67,14 @@ let make = _ => {
           id="submit"
           name="submit"
           placeholder="Enter your confession here..."
-          className="ConfessionListItem_textArea"
+          className="RecentConfessionsListItem_textArea"
           value={state.input}
           onChange={event => {
             let value = ReactEvent.Form.target(event)##value;
             dispatch(UpdateInput(value));
           }}
         />
-        <button type_="submit" className="ConfessionListItem_button">
+        <button type_="submit" className="RecentConfessionsListItem_button">
           {ReasonReact.string("Submit")}
         </button>
       </form>
@@ -88,15 +90,13 @@ let make = _ => {
     </div>;
 
   switch (state) {
-  | {input: _, submitted: false, loading: false, postError: false} =>
+  | {input: _, successfulSubmit: false, submitting: false, postError: false} =>
     renderForm()
 
-  | {input: _, loading: true, submitted: false, postError: false} =>
-    <SendingMessage />
+  | {submitting: true} => <SendingMessage />
 
-  | {input: _, submitted: true, loading: false, postError: false} =>
-    renderSubmittedMessage()
+  | {successfulSubmit: true} => renderSubmittedMessage()
 
-  | {input: _, submitted: _, loading: _, postError: true} => <ErrorMessage />
+  | {postError: true} => <ErrorMessage />
   };
 };
