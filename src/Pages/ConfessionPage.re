@@ -1,4 +1,3 @@
-//open Belt;
 
 type state = {
   confession: option(ConfessionData.confession),

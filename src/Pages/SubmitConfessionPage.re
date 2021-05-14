@@ -2,8 +2,6 @@ open Utils;
 
 requireCSS("src/styles.css");
 
-//maybe call it post sucess becaues that is more descriptive of the situation
-
 type state = {
   input: string,
   submitting: bool,
