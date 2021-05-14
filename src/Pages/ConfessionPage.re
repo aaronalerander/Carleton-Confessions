@@ -1,29 +1,27 @@
-open Belt;
-
-//this file should have a better name like confessionPage
+//open Belt;
 
 type state = {
   confession: option(ConfessionData.confession),
   input: string,
-  loading: bool,
-  submitting: bool,
+  loadingConfession: bool,
+  submittingComment: bool,
   fetchError: bool,
   postError: bool,
 };
 
 type action =
-  | Loaded(ConfessionData.confession)
+  | Load(ConfessionData.confession)
   | UpdateInput(string)
-  | Loading
-  | Submitting
-  | FetchErrorOccured(string)
-  | PostErrorOccured(string);
+  | LoadingConfession
+  | SubmittingComment
+  | FetchErrorOccured
+  | PostErrorOccured;
 
 let initialState = {
   confession: None,
   input: "",
-  loading: true,
-  submitting: false,
+  loadingConfession: true,
+  submittingComment: false,
   fetchError: false,
   postError: false,
 };
@@ -34,25 +32,25 @@ let make = (~id) => {
     React.useReducer(
       (state, action) =>
         switch (action) {
-        | Loaded(data) => {
+        | Load(data) => {
             ...state,
             input: "",
-            loading: false,
-            submitting: false,
+            loadingConfession: false,
+            submittingComment: false,
             confession: Some(data),
           }
         | UpdateInput(newInput) => {...state, input: newInput}
-        | Loading => {...state, loading: true}
-        | Submitting => {...state, submitting: true}
-        | FetchErrorOccured(message) => {
+        | LoadingConfession => {...state, loadingConfession: true}
+        | SubmittingComment => {...state, submittingComment: true}
+        | FetchErrorOccured => {
             ...state,
-            loading: false,
+            loadingConfession: false,
             fetchError: true,
           }
-        | PostErrorOccured(message) => {
+        | PostErrorOccured => {
             ...state,
             postError: true,
-            submitting: false,
+            submittingComment: false,
           }
         },
       initialState,
@@ -61,35 +59,33 @@ let make = (~id) => {
   React.useEffect0(() => {
     let callback = result => {
       switch (result) {
-      | None => dispatch(FetchErrorOccured("None"))
-      | Some(confession) => dispatch(Loaded(confession))
+      | None => dispatch(FetchErrorOccured)
+      | Some(confession) => dispatch(Load(confession))
       };
     };
-    ConfessionData.fetchConfessionWithComments(id, callback);
+    Api.fetchConfessionWithComments(id, callback);
     None;
   });
 
   let submitComment = confessionId => {
-    dispatch(Submitting);
+    dispatch(SubmittingComment);
     let _ =
-      ConfessionData.createComment(confessionId, state.input, callback =>
+      Api.createComment(confessionId, state.input, callback =>
         switch (callback) {
-        | None => dispatch(PostErrorOccured("None"))
-        | Some(confession) => dispatch(Loaded(confession))
+        | None => dispatch(PostErrorOccured)
+        | Some(confession) => dispatch(Load(confession))
         }
       );
     ();
   };
 
   let renderConfession = confession =>
-    <div>
-      <ConfessionCommentsPageListItem key={confession.id} confession />
-    </div>;
+    <div> <ConfessionPageData key={confession.id} confession /> </div>;
 
-  let renderForm = confessionId =>
+  let renderCommentForm = confessionId =>
     <div>
       <form
-        className="ConfessionListItem_commentRow"
+        className="RecentConfessionsListItem_commentRow"
         onSubmit={event => {
           ReactEvent.Form.preventDefault(event);
           submitComment(confessionId);
@@ -109,7 +105,7 @@ let make = (~id) => {
     </div>;
 
   switch (state) {
-  | {loading: true} => <LoadingMessage />
+  | {loadingConfession: true} => <LoadingMessage />
 
   | {fetchError: true} => <ErrorMessage />
 
@@ -124,7 +120,7 @@ let make = (~id) => {
        }}
     </div>
 
-  | {submitting: true} =>
+  | {submittingComment: true} =>
     <div>
       {switch (state.confession) {
        | Some(confession) =>
@@ -132,14 +128,19 @@ let make = (~id) => {
        }}
     </div>
 
-  | {loading: false, submitting: false, fetchError: false, postError: false} =>
+  | {
+      loadingConfession: false,
+      submittingComment: false,
+      fetchError: false,
+      postError: false,
+    } =>
     <div>
       {switch (state.confession) {
        | Some(confession) =>
          <div>
            {renderConfession(confession)}
-           {renderForm(confession.id)}
-         </div> //no idea why I cant extract it from the function renderForm??
+           {renderCommentForm(confession.id)}
+         </div>
        }}
     </div>
   };

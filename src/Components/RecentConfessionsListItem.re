@@ -1,49 +1,49 @@
 open Utils;
 
-//this component has a teriable name and needs to be renamed
-
 requireCSS("src/styles.css");
 
-let commentIcon = requireAssetURI("src/Confession/comment.png");
+let commentIcon = requireAssetURI("src/Components/images/comment.png");
 
 [@react.component]
 let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
   let renderIndex = () =>
-    <aside className="ConfessionListItem_storyIndex">
+    <aside className="RecentConfessionsListItem_storyIndex">
       {React.string(string_of_int(index + 1))}
     </aside>;
 
   let renderTitle = () => {
-    let content = React.string(confession.message);
-    <header className="ConfessionListItem_storyTitle">
+    let title = React.string(confession.message);
+    <header className="RecentConfessionsListItem_storyTitle">
       <Link
         href={"/comments/" ++ confession.id}
-        className="ConfessionListItem_link">
-        content
+        className="RecentConfessionsListItem_link">
+        title
       </Link>
     </header>;
   };
 
-  let renderArticleButton = () =>
-    <div className="ConfessionListItem_flexRow">
+  let renderConfessionTitle = () =>
+    <div className="RecentConfessionsListItem_flexRow">
       {renderIndex()}
-      <div className="ConfessionListItem_storyCell"> {renderTitle()} </div>
+      <div className="RecentConfessionsListItem_storyCell">
+        {renderTitle()}
+      </div>
     </div>;
 
   let renderCommentsButton = () =>
-    <div className="ConfessionListItem_commentsCell">
+    <div className="RecentConfessionsListItem_commentsCell">
       <Link
         href={"/comments/" ++ confession.id}
-        className="ConfessionListItem_link">
+        className="RecentConfessionsListItem_link">
         <div>
           <img
             alt="comments"
-            className="ConfessionListItem_icon"
+            className="RecentConfessionsListItem_icon"
             src=commentIcon
           />
         </div>
         <div>
-          <span className="ConfessionListItem_commentsText">
+          <span className="RecentConfessionsListItem_commentsText">
             {React.string("Comments")}
           </span>
         </div>
@@ -52,13 +52,14 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
 
   let renderCommentsList = () =>
     <div>
-      <h4 className="ConfessionListItem_commentRow">
+      <h4 className="RecentConfessionsListItem_commentRow">
         {React.string("First Comments")}
       </h4>
       <div>
         {confession.comments.commentsArray
          ->Belt.Array.map(item =>
-             <span className="ConfessionListItem_commentRow" key={item.id}>
+             <span
+               className="RecentConfessionsListItem_commentRow" key={item.id}>
                {React.string("-" ++ item.message)}
              </span>
            )
@@ -69,21 +70,19 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
 
   let renderNoCommentsMessage = () =>
     <div>
-      <h4 className="ConfessionListItem_commentRow">
+      <h4 className="RecentConfessionsListItem_commentRow">
         {React.string("Be the first to leave a comment!")}
       </h4>
     </div>;
 
   <>
-    <div className="ConfessionListItem_itemRow">
-      <div className="ConfessionListItem_headingRow">
-        {renderArticleButton()}
+    <div className="RecentConfessionsListItem_itemRow">
+      <div className="RecentConfessionsListItem_headingRow">
+        {renderConfessionTitle()}
         {renderCommentsButton()}
       </div>
       {Array.length(confession.comments.commentsArray) > 0
          ? renderCommentsList() : renderNoCommentsMessage()}
     </div>
   </>;
-  //this is only for the home page and has to be renamed
-  //this component has a teriable name and needs to be renamed
 };

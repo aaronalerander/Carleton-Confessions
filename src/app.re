@@ -5,7 +5,7 @@ let make = () => {
   switch (url.path) {
   | [] => <RecentConfessionsPage />
   | ["submit"] => <SubmitConfessionPage />
-  | ["comments", id] => <ConfessionCommentsPage id />
-  | _ => <NotFound />
+  | ["comments", id] => <ConfessionPage id />
+  | _ => <NotFoundPage />
   };
 };

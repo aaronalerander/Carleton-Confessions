@@ -7,9 +7,9 @@ type state = {
 };
 
 type action =
-  | Loaded(ConfessionData.recentConfessions)
+  | Load(ConfessionData.recentConfessions)
   | Loading
-  | FetchErrorOccured(string);
+  | FetchErrorOccured;
 
 let initialState = {
   recentConfessions: [||],
@@ -24,14 +24,14 @@ let make = () => {
       (state, action) =>
         switch (action) {
         | Loading => {...state, loading: true}
-        | Loaded(data) =>
-          let confessionsNewestToLatest = Array.reverse(data);
+        | Load(data) =>
+          let confessionsOrderedNewestToLatest = Array.reverse(data);
           {
             ...state,
-            recentConfessions: confessionsNewestToLatest,
+            recentConfessions: confessionsOrderedNewestToLatest,
             loading: false,
           };
-        | FetchErrorOccured(message) => {...state, fetchError: true}
+        | FetchErrorOccured => {...state, fetchError: true}
         },
       initialState,
     );
@@ -39,11 +39,11 @@ let make = () => {
   React.useEffect0(() => {
     let callback = result => {
       switch (result) {
-      | None => dispatch(FetchErrorOccured("None"))
-      | Some(confessions) => dispatch(Loaded(confessions))
+      | None => dispatch(FetchErrorOccured)
+      | Some(confessions) => dispatch(Load(confessions))
       };
     };
-    ConfessionData.fetchConfessions(callback);
+    Api.fetchConfessions(callback);
     None;
   });
 
@@ -51,7 +51,7 @@ let make = () => {
     <div>
       {state.recentConfessions
        ->Array.mapWithIndex((index, confession) =>
-           <ConfessionListItem key={confession.id} index confession />
+           <RecentConfessionsListItem key={confession.id} index confession />
          )
        ->React.array}
     </div>;

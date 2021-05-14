@@ -1,20 +1,20 @@
-.ConfessionListItem_link {
+.RecentConfessionsListItem_link {
   color: black;
   text-decoration: none;
 }
 
-.ConfessionListItem_flexRow {
+.RecentConfessionsListItem_flexRow {
   display: flex;
   flex: 1;
   padding: 8px;
 }
 
-.ConfessionListItem_icon {
+.RecentConfessionsListItem_icon {
   width: 32px;
   height: 32px;
 }
 
-.ConfessionListItem_storyCell {
+.RecentConfessionsListItem_storyCell {
   flex: 1;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -22,7 +22,7 @@
   align-items: stretch;
 }
 
-.ConfessionCommentsPageListItem_storyTitle {
+.ConfessionPageData_storyTitle {
   display: flex;
   flex: 0 0 auto;
   margin-bottom: 4px;
@@ -31,7 +31,7 @@
   color: #c53030;
 }
 
-.ConfessionListItem_storyTitle {
+.RecentConfessionsListItem_storyTitle {
   display: flex;
   flex: 0 0 auto;
   margin-bottom: 4px;
@@ -39,19 +39,19 @@
   font-weight: 700;
 }
 
-.ConfessionListItem_storyIndex {
+.RecentConfessionsListItem_storyIndex {
   display: flex;
   flex: 0 0 auto;
   font-size: 18px;
   line-height: 1.2;
   margin-right: 12px;
 }
-.ConfessionListItem_storyIndex::after {
+.RecentConfessionsListItem_storyIndex::after {
   display: block;
   content: ".";
 }
 
-.ConfessionListItem_headingRow {
+.RecentConfessionsListItem_headingRow {
   align-items: stretch;
   /* border: solid 1px #eee; */
   display: flex;
@@ -60,7 +60,7 @@
   cursor: default;
 }
 
-.ConfessionListItem_itemRow {
+.RecentConfessionsListItem_itemRow {
   /* align-items: stretch; */
   border: solid 1px #eee;
   margin-bottom: 12px;
@@ -70,7 +70,7 @@
   cursor: default; */
 }
 
-.ConfessionListItem_commentRow {
+.RecentConfessionsListItem_commentRow {
   align-items: stretch;
   /* border-bottom: solid 1px #eee; */
   display: flex;
@@ -80,11 +80,11 @@
   cursor: default;
 }
 
-.ConfessionListItem_commentsText {
+.RecentConfessionsListItem_commentsText {
   color: #999999;
 }
 
-.ConfessionListItem_commentsCell {
+.RecentConfessionsListItem_commentsCell {
   align-items: center;
   display: flex;
   justify-content: center;
@@ -93,23 +93,23 @@
   width: 80px;
 }
 
-.ConfessionListItem_commentsText {
+.RecentConfessionsListItem_commentsText {
   font-size: 15px;
   text-align: center;
   font-weight: bold;
   color: #000;
 }
 
-a:hover .ConfessionListItem_commentsText {
+a:hover .RecentConfessionsListItem_commentsText {
   color: #000;
 }
 
-.ConfessionListItem_textArea {
+.RecentConfessionsListItem_textArea {
   height: 200px;
   width: 800px;
 }
 
-.ConfessionListItem_button {
+.RecentConfessionsListItem_button {
   background-color: #c53030; /* Green */
   border: none;
   color: white;
@@ -121,15 +121,15 @@ a:hover .ConfessionListItem_commentsText {
   border-radius: 25px;
 }
 
-.NotFound_container {
+.NotFoundPage_container {
   margin: 30px auto;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
-.NotFound_image {
+.NotFoundPage_image {
   margin-top: 60px;
 }
-.NotFound_text {
+.NotFoundPage_text {
   margin-top: 40px;
 }
