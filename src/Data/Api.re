@@ -36,7 +36,7 @@ let fetchConfessions = callback => {
              |> resolve
          )
        )
-    |> catch(_error => callback(None) |> resolve)
+    |> catch(_error => callback(None) |> resolve)  // TODO: Return the Error
     |> ignore
   );
 };
@@ -82,7 +82,7 @@ let fetchConfessionWithComments = (id, callback) => {
              |> resolve
          )
        )
-    |> catch(_error => callback(None) |> resolve)
+    |> catch(_error => callback(None) |> resolve)  // TODO: Return the Error
     |> ignore
   );
 };
@@ -125,7 +125,7 @@ let createConfession = (confession, callback) => {
              |> resolve
          )
        )
-    |> catch(_error => callback(None) |> resolve)
+    |> catch(_error => callback(None) |> resolve)  // TODO: Return the Error
     |> ignore
   );
 };
@@ -169,7 +169,7 @@ let createComment = (id, comment, callback) => {
              |> resolve
          )
        )
-    |> catch(_error => callback(None) |> resolve)
+    |> catch(_error => callback(None) |> resolve)  // TODO: Return the Error
     |> ignore
   );
 };
