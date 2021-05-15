@@ -2,7 +2,7 @@ open Utils;
 
 requireCSS("src/styles.css");
 
-let notFoundImage = requireAssetURI("src/NotFound/notfound404.png");
+let notFoundImage = requireAssetURI("src/Components/images/notfound404.png");
 
 [@react.component]
 let make = () =>
