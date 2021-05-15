@@ -27,7 +27,7 @@ let fetchConfessions = callback => {
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json
-         |> ConfessionData.Decode.decodeGetRecentConfessionsResponse
+         |> Decode.decodeGetRecentConfessionsResponse
          |> (
            decodedResponse =>
              callback(
@@ -69,7 +69,7 @@ let fetchConfessionWithComments = (id, callback) => {
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json
-         |> ConfessionData.Decode.decodeGetConfessionWithCommentsResponse
+         |> Decode.decodeGetConfessionWithCommentsResponse
          |> (
            decodeConfessionWithCommentsResponse =>
              callback(
@@ -113,7 +113,7 @@ let createConfession = (confession, callback) => {
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json
-         |> ConfessionData.Decode.decodeCreateConfessionResponse
+         |> Decode.decodeCreateConfessionResponse
          |> (
            decodeCreateConfessionResponse =>
              callback(
@@ -156,7 +156,7 @@ let createComment = (id, comment, callback) => {
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json
-         |> ConfessionData.Decode.decodeCreateCommentResponse
+         |> Decode.decodeCreateCommentResponse
          |> (
            decodeCreateConfessionResponse =>
              callback(

@@ -5,7 +5,7 @@ requireCSS("src/styles.css");
 let commentIcon = requireAssetURI("src/Components/images/comment.png");
 
 [@react.component]
-let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
+let make = (~confession: Types.confession, ~index: int, ()) => {
   let renderIndex = () =>
     <aside className="recentConfessionsListItemStoryIndex">
       {React.string(string_of_int(index + 1))}

@@ -1,6 +1,5 @@
-
 type state = {
-  confession: option(ConfessionData.confession),
+  confession: option(Types.confession),
   input: string,
   loadingConfession: bool,
   submittingComment: bool,
@@ -9,7 +8,7 @@ type state = {
 };
 
 type action =
-  | Load(ConfessionData.confession)
+  | Load(Types.confession)
   | UpdateInput(string)
   | LoadingConfession
   | SubmittingComment

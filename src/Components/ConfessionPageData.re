@@ -3,7 +3,7 @@ open Utils;
 requireCSS("src/styles.css");
 
 [@react.component]
-let make = (~confession: ConfessionData.confession, ()) => {
+let make = (~confession: Types.confession, ()) => {
   let renderTitle = () => {
     let content = React.string(confession.message);
     <div className="recentConfessionsListItemflexRow">
