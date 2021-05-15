@@ -65,14 +65,14 @@ let make = _ => {
           id="submit"
           name="submit"
           placeholder="Enter your confession here..."
-          className="RecentConfessionsListItem_textArea"
+          className="recentConfessionsListItemTextArea"
           value={state.input}
           onChange={event => {
             let value = ReactEvent.Form.target(event)##value;
             dispatch(UpdateInput(value));
           }}
         />
-        <button type_="submit" className="RecentConfessionsListItem_button">
+        <button type_="submit" className="recentConfessionsListItemButton">
           {ReasonReact.string("Submit")}
         </button>
       </form>

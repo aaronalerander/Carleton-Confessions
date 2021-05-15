@@ -84,7 +84,7 @@ let make = (~id) => {
   let renderCommentForm = confessionId =>
     <div>
       <form
-        className="RecentConfessionsListItem_commentRow"
+        className="recentConfessionsListItemCommentRow"
         onSubmit={event => {
           ReactEvent.Form.preventDefault(event);
           submitComment(confessionId);

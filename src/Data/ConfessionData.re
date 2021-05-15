@@ -48,51 +48,51 @@ module Decode = {
       comments: json |> field("comments", decodeComment),
     };
 
-  let helper_decodeAllConfessions = json =>
+  let helperDecodeAllConfessions = json =>
     Json.Decode.{
       allConfessionsArray: json |> field("data", array(decodeConfession)),
     };
 
-  let helper_decodeData = json =>
+  let helperDecodeData = json =>
     Json.Decode.{
       allConfessions:
-        json |> field("allConfessions", helper_decodeAllConfessions),
+        json |> field("allConfessions", helperDecodeAllConfessions),
     };
 
-  let helper_decodeConfessionWithCommentsdata = json =>
+  let helperDecodeConfessionWithCommentsdata = json =>
     Json.Decode.{
       confession: json |> field("findConfessionByID", decodeConfession),
     };
 
-  let helper_decodeCreateConfessiondata = json =>
+  let helperDecodeCreateConfessiondata = json =>
     Json.Decode.{
       confession: json |> field("createConfession", decodeConfession),
     };
 
-  let helper_decodeCreateCommentdata = json =>
+  let helperDecodeCreateCommentdata = json =>
     Json.Decode.{
       confession: json |> field("parentConfession", decodeConfession),
     };
 
   let decodeGetRecentConfessionsResponse = json =>
-    Json.Decode.{data: json |> field("data", helper_decodeData)};
+    Json.Decode.{data: json |> field("data", helperDecodeData)};
 
   let decodeGetConfessionWithCommentsResponse = json =>
     Json.Decode.{
       confessionWithCommentsdata:
-        json |> field("data", helper_decodeConfessionWithCommentsdata),
+        json |> field("data", helperDecodeConfessionWithCommentsdata),
     };
 
   let decodeCreateConfessionResponse = json =>
     Json.Decode.{
       confessionWithCommentsdata:
-        json |> field("data", helper_decodeCreateConfessiondata),
+        json |> field("data", helperDecodeCreateConfessiondata),
     };
 
   let decodeCreateCommentData = json =>
     Json.Decode.{
       confessionWithCommentsdata:
-        json |> field("createComment", helper_decodeCreateCommentdata),
+        json |> field("createComment", helperDecodeCreateCommentdata),
     };
 
   let decodeCreateCommentResponse = json =>
