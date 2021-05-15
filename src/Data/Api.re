@@ -27,7 +27,7 @@ let fetchConfessions = callback => {
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json
-         |> ConfessionData.Decode.decodeGetRecentConfessionsResponse
+         |> Decode.decodeGetRecentConfessionsResponse
          |> (
            decodedResponse =>
              callback(
@@ -36,7 +36,7 @@ let fetchConfessions = callback => {
              |> resolve
          )
        )
-    |> catch(_error => callback(None) |> resolve)
+    |> catch(_error => callback(None) |> resolve)  // TODO: Return the Error
     |> ignore
   );
 };
@@ -69,7 +69,7 @@ let fetchConfessionWithComments = (id, callback) => {
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json
-         |> ConfessionData.Decode.decodeGetConfessionWithCommentsResponse
+         |> Decode.decodeGetConfessionWithCommentsResponse
          |> (
            decodeConfessionWithCommentsResponse =>
              callback(
@@ -82,7 +82,7 @@ let fetchConfessionWithComments = (id, callback) => {
              |> resolve
          )
        )
-    |> catch(_error => callback(None) |> resolve)
+    |> catch(_error => callback(None) |> resolve)  // TODO: Return the Error
     |> ignore
   );
 };
@@ -113,7 +113,7 @@ let createConfession = (confession, callback) => {
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json
-         |> ConfessionData.Decode.decodeCreateConfessionResponse
+         |> Decode.decodeCreateConfessionResponse
          |> (
            decodeCreateConfessionResponse =>
              callback(
@@ -125,7 +125,7 @@ let createConfession = (confession, callback) => {
              |> resolve
          )
        )
-    |> catch(_error => callback(None) |> resolve)
+    |> catch(_error => callback(None) |> resolve)  // TODO: Return the Error
     |> ignore
   );
 };
@@ -156,7 +156,7 @@ let createComment = (id, comment, callback) => {
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json
-         |> ConfessionData.Decode.decodeCreateCommentResponse
+         |> Decode.decodeCreateCommentResponse
          |> (
            decodeCreateConfessionResponse =>
              callback(
@@ -169,7 +169,7 @@ let createComment = (id, comment, callback) => {
              |> resolve
          )
        )
-    |> catch(_error => callback(None) |> resolve)
+    |> catch(_error => callback(None) |> resolve)  // TODO: Return the Error
     |> ignore
   );
 };

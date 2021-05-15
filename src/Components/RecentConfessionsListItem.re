@@ -5,45 +5,45 @@ requireCSS("src/styles.css");
 let commentIcon = requireAssetURI("src/Components/images/comment.png");
 
 [@react.component]
-let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
+let make = (~confession: Types.confession, ~index: int, ()) => {
   let renderIndex = () =>
-    <aside className="RecentConfessionsListItem_storyIndex">
+    <aside className="recentConfessionsListItemStoryIndex">
       {React.string(string_of_int(index + 1))}
     </aside>;
 
   let renderTitle = () => {
     let title = React.string(confession.message);
-    <header className="RecentConfessionsListItem_storyTitle">
+    <header className="recentConfessionsListItemStoryTitle">
       <Link
         href={"/comments/" ++ confession.id}
-        className="RecentConfessionsListItem_link">
+        className="recentConfessionsListItemLink">
         title
       </Link>
     </header>;
   };
 
   let renderConfessionTitle = () =>
-    <div className="RecentConfessionsListItem_flexRow">
+    <div className="recentConfessionsListItemflexRow">
       {renderIndex()}
-      <div className="RecentConfessionsListItem_storyCell">
+      <div className="recentConfessionsListItemStoryCell">
         {renderTitle()}
       </div>
     </div>;
 
   let renderCommentsButton = () =>
-    <div className="RecentConfessionsListItem_commentsCell">
+    <div className="recentConfessionsListItemCommentsCell">
       <Link
         href={"/comments/" ++ confession.id}
-        className="RecentConfessionsListItem_link">
+        className="recentConfessionsListItemLink">
         <div>
           <img
             alt="comments"
-            className="RecentConfessionsListItem_icon"
+            className="recentConfessionsListItemIcon"
             src=commentIcon
           />
         </div>
         <div>
-          <span className="RecentConfessionsListItem_commentsText">
+          <span className="recentConfessionsListItemCommentsText">
             {React.string("Comments")}
           </span>
         </div>
@@ -52,14 +52,14 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
 
   let renderCommentsList = () =>
     <div>
-      <h4 className="RecentConfessionsListItem_commentRow">
+      <h4 className="recentConfessionsListItemCommentRow">
         {React.string("First Comments")}
       </h4>
       <div>
         {confession.comments.commentsArray
          ->Belt.Array.map(item =>
              <span
-               className="RecentConfessionsListItem_commentRow" key={item.id}>
+               className="recentConfessionsListItemCommentRow" key={item.id}>
                {React.string("-" ++ item.message)}
              </span>
            )
@@ -70,14 +70,14 @@ let make = (~confession: ConfessionData.confession, ~index: int, ()) => {
 
   let renderNoCommentsMessage = () =>
     <div>
-      <h4 className="RecentConfessionsListItem_commentRow">
+      <h4 className="recentConfessionsListItemCommentRow">
         {React.string("Be the first to leave a comment!")}
       </h4>
     </div>;
 
   <>
-    <div className="RecentConfessionsListItem_itemRow">
-      <div className="RecentConfessionsListItem_headingRow">
+    <div className="recentConfessionsListItemItemRow">
+      <div className="recentConfessionsListItemHeadingRow">
         {renderConfessionTitle()}
         {renderCommentsButton()}
       </div>

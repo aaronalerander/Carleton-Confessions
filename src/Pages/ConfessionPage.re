@@ -1,6 +1,5 @@
-
 type state = {
-  confession: option(ConfessionData.confession),
+  confession: option(Types.confession),
   input: string,
   loadingConfession: bool,
   submittingComment: bool,
@@ -9,7 +8,7 @@ type state = {
 };
 
 type action =
-  | Load(ConfessionData.confession)
+  | Load(Types.confession)
   | UpdateInput(string)
   | LoadingConfession
   | SubmittingComment
@@ -84,7 +83,7 @@ let make = (~id) => {
   let renderCommentForm = confessionId =>
     <div>
       <form
-        className="RecentConfessionsListItem_commentRow"
+        className="recentConfessionsListItemCommentRow"
         onSubmit={event => {
           ReactEvent.Form.preventDefault(event);
           submitComment(confessionId);

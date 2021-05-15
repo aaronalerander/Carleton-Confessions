@@ -1,13 +1,13 @@
 open Belt;
 
 type state = {
-  recentConfessions: ConfessionData.recentConfessions,
+  recentConfessions: Types.recentConfessions,
   loading: bool,
   fetchError: bool,
 };
 
 type action =
-  | Load(ConfessionData.recentConfessions)
+  | Load(Types.recentConfessions)
   | Loading
   | FetchErrorOccured;
 
