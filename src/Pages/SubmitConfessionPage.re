@@ -47,9 +47,7 @@ let make = _ => {
       Api.createConfession(value, callback =>
         switch (callback) {
         | None => dispatch(PostErrorOccured)
-        | Some(confession) =>
-          dispatch(SuccessfulSubmit);
-          Js.log(confession);
+        | Some(confession) => dispatch(SuccessfulSubmit)
         }
       );
     ();
